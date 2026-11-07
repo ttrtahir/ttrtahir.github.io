@@ -136,6 +136,7 @@ body.open .tr a[href^="mailto"]{display:none}
 #quick.on{opacity:1;visibility:visible;transform:none}
 .qwrap{max-width:860px;margin:0 auto;padding:40px 40px 60px}
 .qtop{display:flex;justify-content:space-between;align-items:center;color:var(--grey);padding-bottom:30px}
+.qbtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
 .qhead h1{margin:0;font-stretch:125%;font-weight:900;font-size:clamp(44px,7vw,84px);line-height:.88;letter-spacing:-.035em;text-transform:uppercase}
 .qhead h1 .r{color:var(--red)}
 .qtag{font-size:22px;font-weight:600;margin:14px 0 6px}
@@ -186,6 +187,7 @@ body.mobile .left,body.mobile .tr,body.mobile .hint,body.mobile #panel,body.mobi
 <a href="#quick">Quick view</a>
 <a href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a>
 <a href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn</a>
+<a href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">CV ↓</a>
 <button class="toggle lab" id="night" aria-pressed="false"><span class="sw"></span><span id="nl">Night</span></button>
 </div>
 
@@ -199,11 +201,11 @@ body.mobile .left,body.mobile .tr,body.mobile .hint,body.mobile #panel,body.mobi
 <!-- ================= QUICK VIEW (one-page summary; shown automatically on phones) ================= -->
 <section id="quick" aria-label="Quick view" aria-hidden="true">
 <div class="qwrap">
-<div class="qtop lab"><span>Quick view</span><button id="qclose" class="btn solid">Explore the islands →</button></div>
+<div class="qtop lab"><span>Quick view</span><span class="qbtns"><a class="btn" href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">Download CV</a><button id="qclose" class="btn solid">Explore the islands →</button></span></div>
 <header class="qhead">
 <h1>Yusuf Tahir <span class="r">Aydin</span></h1>
 <p class="qtag">Data scientist working in strategy.</p>
-<p class="qmeta lab">Almere / Amsterdam · <a href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> · <a href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub</a><span class="cvlink" hidden> · <a href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">Download CV (PDF)</a></span></p>
+<p class="qmeta lab">Almere / Amsterdam · <a href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> · <a href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub</a><span class="cvlink"> · <a href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">Download CV (PDF)</a></span></p>
 <p class="qintro">I’m interested in the step after the model works: whether an organisation can use it, and whether it should. Co-founder of Comitatus, MSc Strategy &amp; Organization at VU Amsterdam, BSc Data Science &amp; AI from Maastricht. Looking for roles where AI meets strategy: AI deployment and translator roles, strategy and operations, corporate innovation.</p>
 <p class="mobnote lab">The full site is an explorable 3D archipelago. Open it on a laptop to see it.</p>
 </header>
@@ -267,7 +269,7 @@ body.mobile .left,body.mobile .tr,body.mobile .hint,body.mobile #panel,body.mobi
 <div class="box"><span class="lab">Toolkit</span>
 <dl><dt>AI &amp; data</dt><dd>LLMs, RAG, agentic AI · NLP · recommender systems · multi-agent RL · GNNs · time-series and tensor methods</dd><dt>Business</dt><dd>Valuation (DCF, residual income) · market entry · cost structure · strategy and organisation theory · fundraising</dd><dt>Code</dt><dd>Python · SQL · R · MATLAB · FastAPI · Docker · Azure</dd><dt>Languages</dt><dd>Turkish (native) · English (C2) · Dutch (B1, reading)</dd></dl></div>
 <div class="box"><span class="lab">Contact</span>
-<p style="margin-top: 10px"><a class="go" href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> &nbsp; <a class="go" href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn ↗</a> &nbsp; <a class="go" href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub ↗</a></p></div>
+<p style="margin-top: 10px"><a class="go" href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> &nbsp; <a class="go" href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn ↗</a> &nbsp; <a class="go" href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub ↗</a> &nbsp; <a class="go" href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">CV (PDF) ↓</a></p></div>
 </template>
 
 <!-- ---------- WORK ---------- -->
@@ -389,7 +391,6 @@ function openQuick(scrollTo) {
 function closeQuick() { if (MOBILE) return; quick.classList.remove("on"); quick.setAttribute("aria-hidden", "true"); if (location.hash === "#quick") history.replaceState(null, "", location.pathname); }
 document.getElementById("qopen").onclick = () => openQuick();
 document.getElementById("qclose").onclick = closeQuick;
-fetch("assets/yusuf-aydin-cv.pdf", { method: "HEAD" }).then(r => { if (r.ok) document.querySelectorAll(".cvlink").forEach(e => e.hidden = false); }).catch(() => {});
 
 if (MOBILE) {
   document.body.classList.add("mobile");

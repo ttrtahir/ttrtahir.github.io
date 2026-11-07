@@ -26,5 +26,5 @@ Add an entry to `DISTRICTS` with an id, a name, an angle in degrees and a distan
 
 - Every island and district has its own link, for example `ttrtahir.github.io/#comitatus`, `#police`, `#apg`, `#duyvis`, `#thesis`, `#offclock` or `#work`. Opening one flies straight there.
 - `ttrtahir.github.io/#quick` opens the one-page summary. Phones always get this version.
-- **CV:** put your CV at `assets/yusuf-aydin-cv.pdf`. A "Download CV" link appears in the quick view automatically once the file exists.
+- **CV:** lives at `assets/yusuf-aydin-cv.pdf` and is linked from the top bar, the About me panel and the quick view. To update it, replace that file and keep the name.
 - The share image for LinkedIn and WhatsApp is `assets/og.jpg`. LinkedIn caches previews, so use the LinkedIn Post Inspector to refresh it after deploying.

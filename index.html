@@ -449,11 +449,20 @@ ORDER.forEach((I, k) => I.no = String(k).padStart(2, "0"));
 
 /* ---------- renderer / scene ---------- */
 const canvas = document.getElementById("world");
+/* ---------- performance knobs ----------
+   maxDpr   sharpness cap of the 3D scene on high-res screens (text is HTML and always sharp).
+            2 = full retina, 1.5 = near-identical at ~45% fewer pixels.
+   minDpr   floor for the automatic step-down on slow machines.
+   fps      frame-rate cap while someone is interacting (stops 120/144 Hz screens doing double work).
+   idleFps  frame rate after `idleAfter` ms without input; any mouse/key input restores `fps`. */
+const PERF = { maxDpr: 1.5, minDpr: 1, fps: 60, idleFps: 30, idleAfter: 12000 };
+let dpr = Math.min(devicePixelRatio, PERF.maxDpr);
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(dpr);
 renderer.setSize(innerWidth, innerHeight);
 renderer.shadowMap.enabled = true;
 renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.shadowMap.autoUpdate = false; // refreshed every other frame in frame(); the sun never moves
 renderer.toneMapping = THREE.ACESFilmicToneMapping;
 
 const DAY = { bg: new THREE.Color("#efe6d6"), sea: new THREE.Color("#3f8ea3"), hemi: 1.25, sun: 2.4 };
@@ -562,7 +571,7 @@ const PROPS = {
     g.add(mesh(new THREE.CylinderGeometry(.06, .06, 6, 5), mat.ink, -4.4, 3, 1.2));
     const fg = new THREE.PlaneGeometry(1.8, 1.1, 8, 1); const flag = mesh(fg, new THREE.MeshStandardMaterial({ color: "#e2412b", side: THREE.DoubleSide, flatShading: true }), -3.5, 5.4, 1.2);
     g.add(flag); const fb = Float32Array.from(fg.attributes.position.array);
-    anim.push(t => { const p = fg.attributes.position; for (let i = 0; i < p.count; i++) { const x = fb[i * 3]; p.setZ(i, Math.sin(t * 4 + x * 2.5) * .18 * (x + .9)); } p.needsUpdate = true; fg.computeVertexNormals(); });
+    anim.push(t => { const p = fg.attributes.position; for (let i = 0; i < p.count; i++) { const x = fb[i * 3]; p.setZ(i, Math.sin(t * 4 + x * 2.5) * .18 * (x + .9)); } p.needsUpdate = true; });
     trees(g, r, 9, 3.6);
   },
 
@@ -966,7 +975,20 @@ nb.onclick = () => { world.goal = world.goal ? 0 : 1; document.body.classList.to
 
 /* ---------- loop ---------- */
 const clock = new THREE.Clock(), tmp = new THREE.Vector3(); let vo = -182;
-function frame() {
+let last = 0, frames = 0, lastInput = performance.now(); const gaps = [];
+["pointerdown", "pointermove", "wheel", "keydown", "touchstart"].forEach(ev => addEventListener(ev, () => lastInput = performance.now(), { passive: true }));
+function frame(now) {
+  requestAnimationFrame(frame);
+  if (quick.classList.contains("on")) return; // quick view covers the whole screen: nothing to draw
+  const busy = flight.on || now - lastInput < PERF.idleAfter;
+  const stepMs = 1000 / (busy ? PERF.fps : PERF.idleFps), el = now - last;
+  if (el < stepMs - 1) return;
+  last = Math.max(last + stepMs, now - stepMs); // steady cadence on any refresh rate; resyncs after pauses
+  // slow machine? step the 3D resolution down (median of ~1.5 s of busy frames under 40 fps)
+  if (busy && dpr > PERF.minDpr) {
+    gaps.push(el);
+    if (gaps.length >= 90) { gaps.sort((a, b) => a - b); if (gaps[45] > 25) { dpr = Math.max(PERF.minDpr, dpr - .25); renderer.setPixelRatio(dpr); renderer.setSize(innerWidth, innerHeight); } gaps.length = 0; }
+  }
   const dt = Math.min(clock.getDelta(), .1), t = clock.elapsedTime;
   world.glow += (world.goal - world.glow) * Math.min(1, dt * 2); const g = world.glow;
   scene.background.lerpColors(DAY.bg, NIGHT.bg, g); scene.fog.color.copy(scene.background);
@@ -976,7 +998,7 @@ function frame() {
 
   const p = seaGeo.attributes.position;
   for (let i = 0; i < p.count; i++) { const x = seaBase[i * 3], z = seaBase[i * 3 + 2]; p.setY(i, Math.sin(x * .12 + t * .9) * .35 + Math.cos(z * .15 + t * .7) * .3); }
-  p.needsUpdate = true; seaGeo.computeVertexNormals();
+  p.needsUpdate = true; // no normal recompute: flat shading derives normals per pixel
 
   ISLANDS.forEach(I => I.root.position.y = Math.sin(t * .6 + I.bob) * .15);
   anim.forEach(f => f(t, dt));
@@ -987,7 +1009,7 @@ function frame() {
     controls.target.lerpVectors(flight.q0, flight.q1, e);
     if (flight.t >= 1) flight.on = false;
   }
-  controls.update();
+  controls.update(dt); // dt keeps auto-rotate speed the same at 30 or 60 fps
 
   // shift the picture so it centres in the free space between the left card and the panel
   const leftW = 364, panelW = Math.min(560, innerWidth * .42);
@@ -1018,8 +1040,8 @@ function frame() {
     d.label.classList.toggle("hidden", !(tmp.z < 1 && active < 0 && activeD < 0));
   });
 
+  if (frames++ % 2 === 0) renderer.shadowMap.needsUpdate = true;
   renderer.render(scene, camera);
-  requestAnimationFrame(frame);
 }
 addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
 camera.position.set(10, 220, 40); controls.target.set(0, 0, 0);

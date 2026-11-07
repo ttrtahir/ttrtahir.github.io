@@ -1,0 +1,1044 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Yusuf Tahir Aydin</title>
+<meta name="description" content="Yusuf Tahir Aydin: data scientist working in strategy. Co-founder of Comitatus, MSc Strategy &amp; Organization at VU Amsterdam. Explore the archipelago.">
+<meta property="og:title" content="Yusuf Tahir Aydin · Data scientist working in strategy">
+<meta property="og:description" content="Co-founder of Comitatus, MSc Strategy &amp; Organization at VU Amsterdam. Explore the work as a small archipelago.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://ttrtahir.github.io/">
+<meta property="og:image" content="https://ttrtahir.github.io/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ttrtahir.github.io/assets/og.jpg">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M4 22 L11 12 L16 18 L21 9 L28 22 Z' fill='%23e2412b'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,300..900&display=swap">
+<style>
+:root{--bg:#efe6d6;--ink:#141310;--grey:#6b665c;--red:#e2412b;--panel:#f7f2e8;--line:#d8d0c0;--card:rgba(239,230,214,.82)}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:Archivo,system-ui,sans-serif}
+canvas#world{position:fixed;inset:0;display:block}
+.lab{font-stretch:75%;font-weight:600;text-transform:uppercase;letter-spacing:.07em;font-size:12px}
+body.night{--bg:#10141c;--ink:#f1eadc;--grey:#a49d90;--panel:#16191f;--line:#2c313a;--card:rgba(16,20,28,.74)}
+
+/* loader */
+#load{position:fixed;inset:0;z-index:60;background:#efe6d6;display:flex;align-items:center;justify-content:center;transition:opacity 1s .2s,visibility 1s .2s}
+#load.done{opacity:0;visibility:hidden}
+#load span{font-stretch:125%;font-weight:900;font-size:22px;letter-spacing:-.01em;color:#141310}
+#load i{display:block;height:2px;background:var(--red);margin-top:12px;animation:ld 1.2s ease-in-out infinite}
+@keyframes ld{0%{transform:scaleX(0);transform-origin:left}50%{transform:scaleX(1);transform-origin:left}51%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+
+/* overlay */
+.ui{position:fixed;z-index:10;color:var(--ink);transition:color .8s}
+.card{background:var(--card);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);transition:background .8s}
+.left{top:24px;left:24px;width:340px;display:flex;flex-direction:column;gap:10px;max-height:calc(100vh - 48px)}
+.brand{padding:20px 22px 22px}
+.brand h1{margin:0;font-stretch:125%;font-weight:900;font-size:44px;line-height:.86;letter-spacing:-.035em;text-transform:uppercase;transition:font-size .5s}
+.brand h1 .r{color:var(--red)}
+.brand p{margin:14px 0 0;font-size:14.5px;line-height:1.5;color:var(--grey);transition:color .8s}
+.cta{display:flex;gap:8px;margin-top:18px}
+.btn{white-space:nowrap;font-size:11.5px;font-stretch:75%;font-weight:600;text-transform:uppercase;letter-spacing:.07em;cursor:pointer;border:1.5px solid var(--ink);background:transparent;color:var(--ink);padding:11px 15px 10px;text-decoration:none;transition:background .25s,color .25s,border-color .25s}
+.btn:hover{background:var(--ink);color:var(--bg)}
+.btn.solid{background:var(--red);border-color:var(--red);color:#fff}
+.btn.solid:hover{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+body.open .brand p,body.open .cta{display:none}
+body.open .brand h1{font-size:30px}
+
+/* index */
+.index{padding:16px 22px 18px;overflow-y:auto}
+.index .grp{margin-bottom:12px}
+.index .grp:last-child{margin-bottom:0}
+.index .gh{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:none;font:inherit;color:var(--ink);cursor:pointer;padding:6px 0;border-bottom:1.5px solid var(--ink)}
+.index .gh:hover,.index .gh.on{color:var(--red)}
+.index .gh i{font-style:normal;width:10px;height:10px;border-radius:50%;display:inline-block;margin-right:8px;vertical-align:0}
+.index ul{list-style:none;margin:4px 0 0;padding:0}
+.index li button{display:flex;gap:10px;width:100%;background:none;border:none;font:inherit;font-size:14px;color:var(--ink);text-align:left;cursor:pointer;padding:5px 0;transition:color .2s,padding .25s}
+.index li button span{color:var(--grey);font-stretch:75%;font-weight:600;font-size:11.5px;letter-spacing:.06em;padding-top:2px;min-width:20px}
+.index li button:hover{color:var(--red);padding-left:6px}
+.index li button.on{color:var(--red);font-weight:600}
+
+.tr{top:34px;right:40px;display:flex;gap:22px;align-items:center;transition:right .7s cubic-bezier(.7,0,.2,1)}
+.tr a{color:inherit;text-decoration:none;border-bottom:1.5px solid var(--red);padding:6px 0}
+.toggle{background:var(--card);backdrop-filter:blur(8px);border:1.5px solid currentColor;color:inherit;border-radius:999px;padding:9px 16px;cursor:pointer;font:inherit;display:flex;align-items:center;gap:8px}
+.toggle:hover{border-color:var(--red);color:var(--red)}
+.toggle .sw{width:10px;height:10px;border-radius:50%;background:currentColor}
+body.open .tr{right:calc(min(560px,42vw) + 40px)}
+body.open .tr a[href^="mailto"]{display:none}
+.hint{bottom:30px;right:40px;color:var(--grey);transition:opacity .6s;pointer-events:none}
+.hint b{color:var(--red);font-weight:600}
+
+/* floating labels */
+#labels{position:fixed;inset:0;pointer-events:none;z-index:5}
+.tag{position:absolute;left:0;top:0;display:flex;flex-direction:column;align-items:center;transition:opacity .35s;pointer-events:none}
+.tag .box{background:var(--ink);color:var(--bg);padding:7px 11px 6px;white-space:nowrap;transition:background .25s,transform .25s}
+.tag .row{display:flex;gap:8px}
+.tag .box em{font-style:normal;color:var(--red)}
+.tag small{display:none;font-size:11px;letter-spacing:.04em;opacity:.85;margin-top:3px}
+.tag .stem{width:1.5px;height:24px;background:var(--ink)}
+.tag.hot .box{background:var(--red);color:#fff;transform:translateY(-4px)}
+.tag.hot .box em{color:#fff}
+.tag.hot small{display:block}
+.tag.hidden{opacity:0}
+.district{position:absolute;left:0;top:0;pointer-events:auto;cursor:pointer;background:none;border:none;font:inherit;color:var(--ink);text-align:center;transition:opacity .5s,color .3s}
+.district b{display:block;font-stretch:125%;font-weight:900;font-size:46px;line-height:.9;letter-spacing:-.03em;text-transform:uppercase;text-shadow:0 2px 24px var(--bg)}
+.district span{display:inline-block;margin-top:6px;background:var(--ink);color:var(--bg);padding:5px 9px 4px}
+.district:hover{color:var(--red)}
+.district:hover span{background:var(--red);color:#fff}
+.district.hidden{opacity:0;pointer-events:none}
+
+/* panel */
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(560px,42vw);z-index:20;background:var(--panel);color:var(--ink);transform:translateX(102%);transition:transform .7s cubic-bezier(.7,0,.2,1),background .8s,color .8s;display:flex;flex-direction:column;box-shadow:-30px 0 60px rgba(40,30,10,.12)}
+#panel.open{transform:none}
+.ph{display:flex;justify-content:space-between;align-items:center;padding:26px 36px;border-bottom:1px solid var(--line)}
+.ph .nav{display:flex;gap:8px}
+.ph button{background:none;border:1.5px solid var(--line);color:var(--ink);width:44px;height:44px;border-radius:50%;cursor:pointer;font-size:18px;line-height:1}
+.ph button:hover{border-color:var(--red);color:var(--red)}
+.pb{flex:1;overflow-y:auto;padding:36px 36px 60px}
+.pb .kick{color:var(--red)}
+.pb h2{font-stretch:120%;font-weight:900;font-size:52px;line-height:.9;letter-spacing:-.035em;margin:14px 0 6px;text-transform:uppercase}
+.pb .role{color:var(--grey);margin:0 0 28px;font-size:16px}
+.pb .lead{font-stretch:105%;font-weight:600;font-size:23px;line-height:1.25;letter-spacing:-.01em;margin:0 0 22px}
+.pb p{font-size:16.5px;line-height:1.6;margin:0 0 14px}
+.pb .chips{display:flex;flex-wrap:wrap;gap:6px;margin:22px 0}
+.pb .chips span{border:1px solid var(--ink);padding:3px 9px;font-size:11.5px;font-stretch:75%;font-weight:600;text-transform:uppercase;letter-spacing:.05em}
+.pb a.go{display:inline-block;color:var(--ink);font-weight:700;text-decoration:none;border-bottom:2px solid var(--red);padding:8px 0;margin-top:6px}
+.pb a.go:hover{color:var(--red)}
+.pb img{width:100%;display:block;margin:6px 0 24px}
+.pb .duo{background:var(--red)}.pb .duo img{filter:grayscale(1) contrast(1.15);mix-blend-mode:multiply;margin:0}
+.pb ol,.pb ul{padding-left:20px;margin:8px 0 18px}.pb li{margin-bottom:8px;font-size:15.5px;line-height:1.5}
+.pb .box{border-top:1.5px solid var(--ink);padding-top:16px;margin-top:28px}
+.pb .grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:10px 0 24px}
+.pb .grid3 img{margin:0;aspect-ratio:182/235;object-fit:cover}
+.pb dl{display:grid;grid-template-columns:120px minmax(0,1fr);gap:8px 16px;margin:12px 0 0;font-size:15px}
+.pb dt{color:var(--grey)}.pb dd{margin:0}
+.pb .portrait{width:180px;float:right;margin:0 0 14px 20px;filter:grayscale(1)}
+.pb h3.sec{color:var(--red);margin:26px 0 8px;font-size:12px}
+.pb .note{color:var(--grey);font-size:14px;font-style:italic}
+.pb dd b{font-weight:600}
+.pb .dlist{list-style:none;padding:0;margin:18px 0 0}
+.pb .dlist li{display:flex;justify-content:space-between;align-items:baseline;border-bottom:1px solid var(--line);padding:12px 0;margin:0}
+.pb .dlist button{background:none;border:none;font:inherit;color:var(--ink);cursor:pointer;font-size:18px;font-weight:700;padding:0;text-align:left}
+.pb .dlist button:hover{color:var(--red)}
+.pb .dlist span{color:var(--grey);font-size:14px}
+.pfoot{display:flex;justify-content:space-between;gap:10px;margin-top:44px;padding-top:22px;border-top:1px solid var(--line);clear:both}
+.pfoot button{font:inherit;cursor:pointer;background:none;border:none;color:var(--ink);padding:10px 0;text-align:left}
+.pfoot button:hover{color:var(--red)}
+.pfoot .nx{text-align:right;font-weight:700}
+.pfoot small{display:block;color:var(--grey);font-weight:400}
+
+/* quick view */
+#quick{position:fixed;inset:0;z-index:45;background:var(--panel);color:var(--ink);overflow-y:auto;opacity:0;visibility:hidden;transform:translateY(20px);transition:opacity .45s,transform .45s,visibility .45s,background .8s,color .8s}
+#quick.on{opacity:1;visibility:visible;transform:none}
+.qwrap{max-width:860px;margin:0 auto;padding:40px 40px 60px}
+.qtop{display:flex;justify-content:space-between;align-items:center;color:var(--grey);padding-bottom:30px}
+.qhead h1{margin:0;font-stretch:125%;font-weight:900;font-size:clamp(44px,7vw,84px);line-height:.88;letter-spacing:-.035em;text-transform:uppercase}
+.qhead h1 .r{color:var(--red)}
+.qtag{font-size:22px;font-weight:600;margin:14px 0 6px}
+.qmeta{color:var(--grey);margin:0 0 24px;line-height:1.9}
+.qmeta a{color:var(--ink);text-decoration:none;border-bottom:1.5px solid var(--red)}
+.qintro{font-size:17px;line-height:1.6;max-width:700px;margin:0}
+.mobnote{display:none;color:var(--grey);margin-top:16px}
+.qh{color:var(--red);margin:44px 0 6px;padding-bottom:8px;border-bottom:1.5px solid var(--ink)}
+.qitem{display:grid;grid-template-columns:150px minmax(0,1fr);gap:20px;padding:18px 0;border-bottom:1px solid var(--line);scroll-margin-top:20px}
+.qitem.flash{animation:flash 1.6s}
+@keyframes flash{0%,40%{background:rgba(226,65,43,.12)}100%{background:transparent}}
+.qwhen{color:var(--grey);padding-top:5px}
+.qitem h3{margin:0 0 6px;font-size:21px;font-weight:700}
+.qitem h3 span{font-weight:400;color:var(--grey);font-size:16px;margin-left:6px}
+.qitem p{margin:0 0 8px;font-size:15.5px;line-height:1.55}
+.qlinks{display:flex;gap:18px}
+.qlinks a{color:var(--ink);font-weight:600;text-decoration:none;border-bottom:1.5px solid var(--red);font-size:14px}
+.qlinks a:hover{color:var(--red)}
+.qcols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:40px}
+.ql{list-style:none;padding:0;margin:8px 0 0}
+.ql li{padding:7px 0;border-bottom:1px solid var(--line);font-size:15px;line-height:1.45}
+.ql li b{display:block;font-weight:600}
+.qsmall{font-size:15px;line-height:1.55;margin-top:10px}
+.qsmall a{color:var(--ink)}
+.qfoot{color:var(--grey);margin-top:50px}
+body.mobile #qclose,body.mobile .isl{display:none}
+body.mobile .mobnote{display:block}
+body.mobile .left,body.mobile .tr,body.mobile .hint,body.mobile #panel,body.mobile #labels{display:none}
+@media (max-width:640px){.qwrap{padding:28px 20px 50px}.qitem{grid-template-columns:minmax(0,1fr);gap:4px}.qcols{grid-template-columns:minmax(0,1fr);gap:0}.qitem h3 span{display:block;margin:2px 0 0}}
+@media print{#world,#labels,.ui,#panel,#load,.qtop,.isl,.mobnote{display:none!important}#quick{position:static;opacity:1;visibility:visible;transform:none;background:#fff;color:#000}html,body{overflow:visible;height:auto}}
+</style>
+</head>
+<body>
+<div id="load"><div><span>Raising islands</span><i></i></div></div>
+<canvas id="world" aria-hidden="true"></canvas>
+<div id="labels"></div>
+
+<div class="ui left">
+<header class="card brand">
+<h1>Yusuf<br>Tahir <span class="r">Aydin</span></h1>
+<p>Data scientist working in strategy. Co-founder of Comitatus, MSc Strategy &amp; Organization at VU Amsterdam. Open to roles where AI meets strategy.</p>
+<div class="cta"><button class="btn solid" id="tour">Start the tour →</button><button class="btn" id="qopen">Quick view</button></div>
+</header>
+<nav class="card index" id="index" aria-label="Districts and islands"></nav>
+</div>
+
+<div class="ui tr lab">
+<a href="#quick">Quick view</a>
+<a href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a>
+<a href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn</a>
+<button class="toggle lab" id="night" aria-pressed="false"><span class="sw"></span><span id="nl">Night</span></button>
+</div>
+
+<div class="ui hint lab" id="hint"><b>●</b> Drag to orbit · scroll to zoom · click a district or island</div>
+
+<aside id="panel" aria-live="polite" aria-label="Details">
+<div class="ph"><span class="lab" id="pcount"></span><div class="nav"><button id="prev" aria-label="Previous">←</button><button id="next" aria-label="Next">→</button><button id="close" aria-label="Close and fly back">✕</button></div></div>
+<div class="pb" id="pbody"></div>
+</aside>
+
+<!-- ================= QUICK VIEW (one-page summary; shown automatically on phones) ================= -->
+<section id="quick" aria-label="Quick view" aria-hidden="true">
+<div class="qwrap">
+<div class="qtop lab"><span>Quick view</span><button id="qclose" class="btn solid">Explore the islands →</button></div>
+<header class="qhead">
+<h1>Yusuf Tahir <span class="r">Aydin</span></h1>
+<p class="qtag">Data scientist working in strategy.</p>
+<p class="qmeta lab">Almere / Amsterdam · <a href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> · <a href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn</a> · <a href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub</a><span class="cvlink" hidden> · <a href="assets/yusuf-aydin-cv.pdf" target="_blank" rel="noopener">Download CV (PDF)</a></span></p>
+<p class="qintro">I’m interested in the step after the model works: whether an organisation can use it, and whether it should. Co-founder of Comitatus, MSc Strategy &amp; Organization at VU Amsterdam, BSc Data Science &amp; AI from Maastricht. Looking for roles where AI meets strategy: AI deployment and translator roles, strategy and operations, corporate innovation.</p>
+<p class="mobnote lab">The full site is an explorable 3D archipelago. Open it on a laptop to see it.</p>
+</header>
+
+<h2 class="lab qh">Experience</h2>
+<article class="qitem" id="q-comitatus"><div class="qwhen lab">2026 — now</div><div><h3>Comitatus <span>Co-founder &amp; CEO</span></h3>
+<p>Equity valuation platform that shows the range of valuation models instead of one number, covering around 4,000 listed companies. Designed the methodology (residual income and DCF on SEC EDGAR filings), built the five-year financial model, and run fundraising. Audited production data before launch and caught errors on public pages.</p>
+<p class="qlinks"><a href="https://comitatus.io" target="_blank" rel="noopener">comitatus.io ↗</a><a class="isl" href="#comitatus">Open the island →</a></p></div></article>
+<article class="qitem" id="q-police"><div class="qwhen lab">Sep 2025 — Feb 2026</div><div><h3>iLab Politie <span>Research affiliate · Dutch National Police</span></h3>
+<p>Patrol planning with multi-agent PPO (MAPPO) and graph neural networks on OpenStreetMap road data, benchmarked against expert heuristics and behavioural cloning. Built a dashboard so officers without a technical background could compare plans themselves.</p>
+<p class="qlinks"><a class="isl" href="#police">Open the island →</a></p></div></article>
+<article class="qitem" id="q-apg"><div class="qwhen lab">Sep 2023 — Feb 2025</div><div><h3>APG Asset Management <span>AI intern</span></h3>
+<p>Intent classification for ABP’s customer web journey under GDPR constraints. Generative models (ChatGPT, LLaMA) beat SVM and XGBoost and were deployed on Azure. Redesigned the intent taxonomy and added entity recognition, which changed how customer queries were routed.</p>
+<p class="qlinks"><a class="isl" href="#apg">Open the island →</a></p></div></article>
+<article class="qitem" id="q-duyvis"><div class="qwhen lab">Jul — Sep 2026</div><div><h3>PepsiCo Duyvis <span>Consulting College · live client case</span></h3>
+<p>Workforce strategy case for the Duyvis factory, in a programme assessed by consultants from EY, Accenture, Roland Berger, TwynstraGudde and AEL. Recommended a permanent core, a flex ring and a conversion pipeline; presented to PepsiCo managers.</p>
+<p class="qlinks"><a class="isl" href="#duyvis">Open the island →</a></p></div></article>
+
+<h2 class="lab qh">Research</h2>
+<article class="qitem" id="q-thesis"><div class="qwhen lab">2026</div><div><h3>When does tensorisation help? <span>BSc thesis · Maastricht University</span></h3>
+<p>Proved that Tucker HSSA is MSSA with one added separability prior, then tested when that prior helps in a pre-registered study over 1,200 synthetic conditions and a walk-forward benchmark on financial data. Supervised by Philippe Dreesen and Otti D’Huys.</p>
+<p class="qlinks"><a href="assets/yusuf-aydin-bsc-thesis.pdf" target="_blank" rel="noopener">Thesis (PDF) ↗</a><a class="isl" href="#thesis">Open the island →</a></p></div></article>
+
+<div class="qcols">
+<div><h2 class="lab qh">Education</h2><ul class="ql">
+<li><b>MSc Business Administration, Strategy &amp; Organization</b>VU Amsterdam · 2026–27</li>
+<li><b>BSc Data Science &amp; AI, Honours</b>Maastricht University · 2022–26</li>
+<li><b>Schakeljaar</b>Boswell Bèta · 2021–22</li></ul>
+<h2 class="lab qh">Certifications</h2><ul class="ql">
+<li>IBM Agentic AI Professional Certificate · 2026</li><li>IBM RAG Professional Certificate · 2026</li><li>Strategic Management &amp; Innovation, CBS · 2026</li></ul></div>
+<div><h2 class="lab qh">Skills</h2><ul class="ql">
+<li><b>AI &amp; data</b>LLMs, RAG, agentic AI · NLP · recommender systems · multi-agent RL · GNNs · time-series and tensor methods</li>
+<li><b>Business</b>Valuation (DCF, residual income) · market entry · cost structure · strategy and organisation theory</li>
+<li><b>Code</b>Python · SQL · R · MATLAB · FastAPI · Docker · Azure</li>
+<li><b>Languages</b>Turkish (native) · English (C2) · Dutch (B1, reading)</li></ul>
+<h2 class="lab qh">Outside work</h2><p class="qsmall">3D modelling and pixel art, small games on <a href="https://ttrtahir.itch.io" target="_blank" rel="noopener">itch.io</a>, chess, ney and classical guitar, OSINT, photography.</p></div>
+</div>
+<p class="qfoot lab">© 2026 Yusuf Tahir Aydin</p>
+</div>
+</section>
+
+<!-- ================================================================
+     ISLAND CONTENT
+     Each island shows the <template id="c-ISLANDID"> with its id.
+     To add an island: add a line to ISLANDS in the script below,
+     then add a template here with the matching id.
+     ================================================================ -->
+
+<template id="c-home">
+<span class="lab kick">About me</span>
+<h2>Yusuf Tahir Aydin</h2>
+<p class="role">Almere / Amsterdam · Turkish-Dutch</p>
+<img class="portrait" src="assets/portrait.jpg" alt="Portrait of Yusuf Tahir Aydin">
+<p class="lead">I’m interested in the step after the model works: whether an organisation can use it, and whether it should.</p>
+<p>I started deep in the technical side: tensor decompositions for financial time series, multi-agent reinforcement learning for police patrol planning, generative-AI benchmarking on production data at APG. That pulled me toward strategy and organisation theory, and into co-founding Comitatus.</p>
+<p>Now I’m looking for work where AI meets strategy: AI deployment and translator roles, strategy and operations, corporate innovation. My research interest is how organisations design, coordinate and govern AI agents.</p>
+<div class="box"><span class="lab">Education</span>
+<dl><dt>2026–27</dt><dd><b>MSc Business Administration, Strategy &amp; Organization</b><br>Vrije Universiteit Amsterdam</dd><dt>2022–26</dt><dd><b>BSc Data Science &amp; AI, Honours Programme</b><br>Maastricht University</dd><dt>2021–22</dt><dd><b>Schakeljaar</b><br>Boswell Bèta</dd></dl></div>
+<div class="box"><span class="lab">Certifications</span>
+<dl><dt>2026</dt><dd>IBM Agentic AI Professional Certificate</dd><dt>2026</dt><dd>IBM RAG Professional Certificate</dd><dt>2026</dt><dd>Strategic Management &amp; Innovation · Copenhagen Business School</dd></dl></div>
+<div class="box"><span class="lab">Toolkit</span>
+<dl><dt>AI &amp; data</dt><dd>LLMs, RAG, agentic AI · NLP · recommender systems · multi-agent RL · GNNs · time-series and tensor methods</dd><dt>Business</dt><dd>Valuation (DCF, residual income) · market entry · cost structure · strategy and organisation theory · fundraising</dd><dt>Code</dt><dd>Python · SQL · R · MATLAB · FastAPI · Docker · Azure</dd><dt>Languages</dt><dd>Turkish (native) · English (C2) · Dutch (B1, reading)</dd></dl></div>
+<div class="box"><span class="lab">Contact</span>
+<p style="margin-top: 10px"><a class="go" href="mailto:ttrtahir@gmail.com">ttrtahir@gmail.com</a> &nbsp; <a class="go" href="https://linkedin.com/in/yusuftahiraydin" target="_blank" rel="noopener">LinkedIn ↗</a> &nbsp; <a class="go" href="https://github.com/ttrtahir" target="_blank" rel="noopener">GitHub ↗</a></p></div>
+</template>
+
+<!-- ---------- WORK ---------- -->
+<template id="c-comitatus">
+<span class="lab kick">2026 — now</span>
+<h2>Comitatus</h2>
+<p class="role">Co-founder &amp; CEO · equity valuation software</p>
+<p class="lead">Most valuation tools give you one number. We show the range.</p>
+<h3 class="lab sec">The problem</h3>
+<p>A single fair value from a black box hides the most useful information: different valuation models often disagree, and how much they disagree tells you how uncertain the number really is.</p>
+<h3 class="lab sec">What I do</h3>
+<p>I lead a three-person founding team with a CTO and a CFO. I designed the valuation methodology: a residual income engine alongside DCF and five-year projections, built on SEC EDGAR filings and covering around 4,000 listed companies. There’s a free screener and a $29/month Pro tier. I also built the five-year financial model and run our fundraising conversations.</p>
+<h3 class="lab sec">A call that mattered</h3>
+<p>Before launch I audited the production data myself instead of trusting the pipeline. It caught real errors on public pages, including a DCF price being used to headline a residual income breakdown. A valuation product only works if people can trust the numbers, so this kind of check isn’t optional.</p>
+<h3 class="lab sec">Where it could go</h3>
+<p>I analysed a second segment: fair-value and impairment work under IFRS for valuation professionals. The argument rests on cost structure. An income-approach build on free data has almost no marginal cost, while incumbents carry licensed-data costs that set a floor under their prices.</p>
+<div class="chips"><span>Python</span><span>FastAPI</span><span>PostgreSQL</span><span>Redis</span><span>SEC EDGAR</span><span>DCF</span><span>Residual income</span></div>
+<a class="go" href="https://comitatus.io" target="_blank" rel="noopener">comitatus.io ↗</a>
+</template>
+
+<template id="c-police">
+<span class="lab kick">Sep 2025 — Feb 2026</span>
+<h2>iLab Politie</h2>
+<p class="role">Research affiliate · Dutch National Police</p>
+<p class="lead">Planning police patrols with a team of learning agents.</p>
+<h3 class="lab sec">The problem</h3>
+<p>Patrol planning is a coordination problem: several units, one road network, limited time, and every unit’s route changes what the others should do.</p>
+<h3 class="lab sec">What I did</h3>
+<p>I built a planning system with multi-agent PPO (MAPPO) and graph neural networks on real OpenStreetMap road data, and benchmarked it against expert heuristics and behavioural cloning.</p>
+<h3 class="lab sec">Making it usable</h3>
+<p>I also built a dashboard so officers without a technical background could compare the planning options themselves, rather than having to take a model’s word for it.</p>
+<p class="note">The results aren’t public, so this describes the approach only.</p>
+<div class="chips"><span>MAPPO</span><span>Graph neural networks</span><span>OpenStreetMap</span><span>Benchmarking</span><span>Dashboard</span></div>
+</template>
+
+<template id="c-apg">
+<span class="lab kick">Sep 2023 — Feb 2025</span>
+<h2>APG</h2>
+<p class="role">AI intern · APG Asset Management</p>
+<p class="lead">Working out what pension customers are actually asking.</p>
+<h3 class="lab sec">The problem</h3>
+<p>ABP’s website receives a steady stream of customer questions, and each one needs to reach the right place, within strict GDPR and data-governance rules.</p>
+<h3 class="lab sec">What I did</h3>
+<p>I built an intent-classification pipeline and tested classical models (SVM, XGBoost) against generative ones (ChatGPT, LLaMA). The generative models won, and the result was deployed on Azure.</p>
+<h3 class="lab sec">Just as important</h3>
+<p>I redesigned the intent taxonomy and added entity recognition. Better categories changed how incoming questions were routed, which is a change the model comparison alone wouldn’t have made.</p>
+<div class="chips"><span>LLMs</span><span>SVM</span><span>XGBoost</span><span>NER</span><span>Azure</span><span>GDPR</span></div>
+</template>
+
+<template id="c-duyvis">
+<span class="lab kick">Jul — Sep 2026 · Consulting College</span>
+<h2>PepsiCo Duyvis</h2>
+<p class="role">Workforce strategy · live client case</p>
+<div class="duo"><img src="assets/presenting.jpg" alt="Yusuf presenting the three-pillar workforce plan to PepsiCo managers"></div>
+<p class="lead">Our read: flex work was a symptom, not the cause.</p>
+<h3 class="lab sec">Context</h3>
+<p>A live case on the frontline workforce model at PepsiCo’s Duyvis factory in Zaandam, worked in a project team within a consulting programme assessed by consultants from EY, Accenture, Roland Berger, TwynstraGudde and AEL.</p>
+<h3 class="lab sec">What we recommended</h3>
+<p>A permanent core, a flex ring around it, and a pipeline that converts good flex workers into permanent staff, in three pillars:</p>
+<ol>
+<li><b>Stabilise capacity and the flex model.</b> Start now.</li>
+<li><b>Onboarding, development and retention.</b> Pilot first.</li>
+<li><b>Recruitment and talent pipeline.</b> Validate first, with its own business case.</li>
+</ol>
+<p>We delivered a written report with a separate calculation trail and presented it to PepsiCo managers.</p>
+</template>
+
+<!-- ---------- RESEARCH ---------- -->
+<template id="c-thesis">
+<span class="lab kick">BSc thesis · Maastricht University · 2026</span>
+<h2>Tensors</h2>
+<p class="role">Supervised by Philippe Dreesen &amp; Otti D’Huys</p>
+<p class="lead">When does tensorisation help?</p>
+<h3 class="lab sec">The question</h3>
+<p>Tensor methods are often said to recover the structure in multichannel time series better than matrix methods. It’s rarely made clear when that should hold.</p>
+<h3 class="lab sec">What I did</h3>
+<p>I proved that Tucker HSSA is exactly MSSA with one added assumption, a separability prior on how channels and time lags combine. Then I tested when that prior helps, with a pre-registered experiment over 1,200 synthetic conditions and a walk-forward benchmark on sector ETFs, commodities/FX and crypto.</p>
+<h3 class="lab sec">What I found</h3>
+<p>A map of which assumption suits which data, not a winner. The tensor view showed a tentative benefit only where one shared factor dominates a panel.</p>
+<h3 class="lab sec">In hindsight</h3>
+<ol>
+<li>More seeds per condition. Five was too few for the per-cell tests to have real power.</li>
+<li>A more precisely defined data-generating process, with model ranks matched to it.</li>
+<li>Measure each basket’s structure before comparing methods, rather than interpreting the winners afterwards.</li></ol>
+<a class="go" href="assets/yusuf-aydin-bsc-thesis.pdf" target="_blank" rel="noopener">Read the thesis (PDF) ↗</a>
+</template>
+
+<!-- ---------- OFF THE CLOCK ---------- -->
+<template id="c-offclock">
+<span class="lab kick">Off the clock</span>
+<h2>Outside work</h2>
+<p class="role">The things I make, play and follow</p>
+<h3 class="lab sec">3D and games</h3>
+<p>I got into 3D modelling to make game assets, and kept going for the making itself: low-poly worlds, sculpted creatures, pixel art. This archipelago is low-poly for the same reason, and the lighthouse is a remake of one of mine. I also tried building games, and a few small ones are on itch.io.</p>
+<div class="grid3"><img src="assets/art-lighthouse.jpg" alt="Original low-poly lighthouse render"><img src="assets/art-horns.jpg" alt="Glowing horned creature sculpt"><img src="assets/art-robot.jpg" alt="Pixel art robot over a city"></div>
+<a class="go" href="https://ttrtahir.itch.io" target="_blank" rel="noopener">ttrtahir.itch.io ↗</a>
+<h3 class="lab sec">Strategy games</h3>
+<p>Over fifteen years of grand strategy and colony sims: Crusader Kings, Hearts of Iron, Victoria, RimWorld. My interest in strategy goes back to these.</p>
+<h3 class="lab sec">Chess</h3>
+<p>I played and prepared for tournaments as a kid in Turkey. These days it’s mostly puzzles, and I’m looking at the FIDE arbiter route.</p>
+<h3 class="lab sec">Also</h3>
+<p>I play the ney and I’m learning classical guitar. I follow OSINT and accountability journalism, and I take photographs.</p>
+</template>
+
+<script type="importmap">{"imports":{"three":"./assets/js/three.module.min.js"}}</script>
+<script type="module">
+import * as THREE from "three";
+import { OrbitControls } from "./assets/js/OrbitControls.js";
+
+/* ---------- quick view + phones ---------- */
+const MOBILE = matchMedia("(max-width: 820px), (pointer: coarse) and (max-width: 1100px)").matches;
+const quick = document.getElementById("quick");
+let quickHook = () => {};
+function openQuick(scrollTo) {
+  quick.classList.add("on"); quick.setAttribute("aria-hidden", "false");
+  if (location.hash !== "#quick" && !scrollTo) history.replaceState(null, "", "#quick");
+  if (scrollTo) { const el = document.getElementById("q-" + scrollTo); if (el) { el.scrollIntoView({ block: "start" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash"); } }
+}
+function closeQuick() { if (MOBILE) return; quick.classList.remove("on"); quick.setAttribute("aria-hidden", "true"); if (location.hash === "#quick") history.replaceState(null, "", location.pathname); }
+document.getElementById("qopen").onclick = () => openQuick();
+document.getElementById("qclose").onclick = closeQuick;
+fetch("assets/yusuf-aydin-cv.pdf", { method: "HEAD" }).then(r => { if (r.ok) document.querySelectorAll(".cvlink").forEach(e => e.hidden = false); }).catch(() => {});
+
+if (MOBILE) {
+  document.body.classList.add("mobile");
+  document.getElementById("load").classList.add("done");
+  const h = location.hash.slice(1);
+  openQuick(h && h !== "quick" ? h : null);
+  addEventListener("hashchange", () => { const k = location.hash.slice(1); if (k && k !== "quick") openQuick(k); });
+} else {
+  startWorld();
+}
+
+function startWorld() {
+
+/* =====================================================================
+   THE MAP — edit these two lists to change the world.
+
+   DISTRICTS: groups of islands. `angle` places the district around the
+   home island (degrees), `dist` is how far out it sits.
+
+   ISLANDS: one line per island.
+     id        must match a <template id="c-ID"> above (the panel text)
+     district  which district it belongs to ("home" = the centre island)
+     name/sub  the label on the map (sub shows on hover)
+     prop      what stands on the island. Available:
+               house, bars, roads, office, factory, school, tensor, rocket,
+               lighthouse, arcade, chess, music, radio, camera, offclock, trees
+   Islands are laid out automatically in a ring around their district.
+   ===================================================================== */
+const DISTRICTS = [
+  { id: "work",     name: "Work",          sub: "Jobs, ventures &amp; client work", angle: 20,  dist: 48, color: "#e2412b" },
+  { id: "research", name: "Research",      sub: "BSc thesis",                   angle: 145, dist: 36, color: "#3c5bd6" },
+  { id: "life",     name: "Off the clock", sub: "Outside work",                angle: 255, dist: 36, color: "#f1c13b" },
+];
+const ISLANDS = [
+  { id: "home",      district: "home",     name: "About me",          sub: "Background · education · contact", prop: "house" },
+  { id: "comitatus", district: "work",     name: "Comitatus",         sub: "Co-founder &amp; CEO · 2026 –",       prop: "bars" },
+  { id: "police",    district: "work",     name: "iLab Politie",      sub: "Research affiliate · 2025 – 26",   prop: "roads" },
+  { id: "apg",       district: "work",     name: "APG",               sub: "AI intern · 2023 – 25",            prop: "office" },
+  { id: "duyvis",    district: "work",     name: "PepsiCo Duyvis",    sub: "Consulting case · 2026",           prop: "factory" },
+  { id: "thesis",    district: "research", name: "Thesis",            sub: "BSc thesis · 2026",                prop: "tensor" },
+  { id: "offclock",  district: "life",     name: "Outside work",      sub: "3D · games · chess · music",       prop: "offclock" },
+];
+
+/* ---------- layout ---------- */
+const D = Object.fromEntries(DISTRICTS.map(d => [d.id, d]));
+DISTRICTS.forEach(d => { const a = d.angle * Math.PI / 180; d.c = [Math.cos(a) * d.dist, Math.sin(a) * d.dist]; d.islands = []; });
+ISLANDS.forEach(I => { if (I.district === "home") { I.pos = [0, 0]; I.r = 7.5; } else D[I.district].islands.push(I); });
+DISTRICTS.forEach(d => {
+  const n = d.islands.length, ring = n === 1 ? 0 : Math.max(9, 3.4 * n);
+  const out = Math.atan2(d.c[1], d.c[0]);
+  d.islands.forEach((I, k) => { const a = out + Math.PI + (k + .5) / n * Math.PI * 2; I.pos = [d.c[0] + Math.cos(a) * ring, d.c[1] + Math.sin(a) * ring]; I.r = n === 1 ? 7.5 : 4.8; });
+  d.ring = ring;
+});
+const ORDER = [ISLANDS.find(I => I.district === "home"), ...DISTRICTS.flatMap(d => d.islands)];
+ORDER.forEach((I, k) => I.no = String(k).padStart(2, "0"));
+
+/* ---------- renderer / scene ---------- */
+const canvas = document.getElementById("world");
+const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(innerWidth, innerHeight);
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+
+const DAY = { bg: new THREE.Color("#efe6d6"), sea: new THREE.Color("#3f8ea3"), hemi: 1.25, sun: 2.4 };
+const NIGHT = { bg: new THREE.Color("#10141c"), sea: new THREE.Color("#173447"), hemi: .28, sun: .25 };
+const scene = new THREE.Scene();
+scene.background = DAY.bg.clone();
+scene.fog = new THREE.Fog(DAY.bg.clone(), 150, 340);
+
+const camera = new THREE.PerspectiveCamera(32, innerWidth / innerHeight, .1, 600);
+const HOME_CAM = new THREE.Vector3(112, 104, 142);
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const controls = new OrbitControls(camera, canvas);
+controls.enableDamping = true; controls.dampingFactor = .06;
+controls.autoRotate = !reduce; controls.autoRotateSpeed = .25;
+controls.minDistance = 22; controls.maxDistance = 240;
+controls.maxPolarAngle = 1.3; controls.enablePan = true; controls.screenSpacePanning = false;
+
+const hemi = new THREE.HemisphereLight("#fff6e6", "#4f6d7a", DAY.hemi); scene.add(hemi);
+const sun = new THREE.DirectionalLight("#fff0d4", DAY.sun);
+sun.position.set(60, 90, 35); sun.castShadow = true;
+sun.shadow.mapSize.set(4096, 4096);
+Object.assign(sun.shadow.camera, { left: -95, right: 95, top: 95, bottom: -95, near: 1, far: 260 });
+sun.shadow.bias = -.0005;
+scene.add(sun);
+const moon = new THREE.DirectionalLight("#7f9cff", 0); moon.position.set(-30, 40, -20); scene.add(moon);
+const world = { glow: 0, goal: 0 };
+
+/* ---------- materials & helpers ---------- */
+const M = (c, o = {}) => new THREE.MeshStandardMaterial({ color: c, flatShading: true, roughness: .85, ...o });
+const E = (c, e) => new THREE.MeshStandardMaterial({ color: c, emissive: e, emissiveIntensity: 0, flatShading: true });
+const mat = {
+  grass: M("#86b25a"), sand: M("#e2cf9f"), dirt: M("#9c7a52"), rock: M("#8b8478"), rockD: M("#5e5850"),
+  trunk: M("#6b4a2f"), leaf: M("#4f8a3c"), leaf2: M("#3e7a35"), white: M("#f2ede2"), ink: M("#22201c"), red: M("#e2412b"),
+  grey: M("#b9b2a5"), road: M("#3a3631"), blue: M("#3c5bd6"), yellow: M("#f1c13b"), wood: M("#a87b4f"), woodD: M("#7a5636"),
+  win: E("#2a2620", "#ffcf73"), screen: E("#1b2a3a", "#59d2ff"),
+  lamp: new THREE.MeshStandardMaterial({ color: "#fff3c4", emissive: "#ffd86b", emissiveIntensity: .4, flatShading: true }),
+};
+const glowMats = [mat.win, mat.screen];
+const jitter = (geo, amt, keepTop = null) => {
+  const p = geo.attributes.position, seen = new Map();
+  for (let i = 0; i < p.count; i++) {
+    const k = `${p.getX(i).toFixed(3)},${p.getY(i).toFixed(3)},${p.getZ(i).toFixed(3)}`;
+    if (!seen.has(k)) seen.set(k, [(Math.random() - .5) * amt, (Math.random() - .5) * amt * .6, (Math.random() - .5) * amt]);
+    const [dx, dy, dz] = seen.get(k);
+    p.setXYZ(i, p.getX(i) + dx, (keepTop !== null && p.getY(i) >= keepTop) ? p.getY(i) : p.getY(i) + dy, p.getZ(i) + dz);
+  }
+  geo.computeVertexNormals(); return geo;
+};
+const mesh = (geo, m, x = 0, y = 0, z = 0, cast = true) => { const o = new THREE.Mesh(geo, m); o.position.set(x, y, z); o.castShadow = cast; o.receiveShadow = true; return o; };
+const anim = [];
+
+/* ---------- sea ---------- */
+const seaGeo = new THREE.PlaneGeometry(700, 700, 110, 110); seaGeo.rotateX(-Math.PI / 2);
+const seaMat = M(DAY.sea, { roughness: .45, metalness: .05 });
+const sea = new THREE.Mesh(seaGeo, seaMat); sea.receiveShadow = true; sea.position.y = -.2; scene.add(sea);
+const seaBase = Float32Array.from(seaGeo.attributes.position.array);
+
+/* ---------- island + trees ---------- */
+function makeIsland(r) {
+  const g = new THREE.Group();
+  g.add(mesh(jitter(new THREE.CylinderGeometry(r, r * .96, .9, 9, 1), .5, .45), mat.grass, 0, 1.25, 0));
+  g.add(mesh(jitter(new THREE.CylinderGeometry(r * 1.12, r * 1.25, .9, 9, 1), .6), mat.sand, 0, .35, 0));
+  const under = jitter(new THREE.ConeGeometry(r * 1.2, r * 1.3, 9, 2), .9); under.rotateX(Math.PI);
+  g.add(mesh(under, mat.dirt, 0, -r * .62, 0, false));
+  for (let i = 0; i < 4; i++) {
+    const a = Math.random() * 6.28, rr = r * (1.05 + Math.random() * .2);
+    g.add(mesh(jitter(new THREE.DodecahedronGeometry(.35 + Math.random() * .45, 0), .2), Math.random() > .5 ? mat.rock : mat.rockD, Math.cos(a) * rr, .3, Math.sin(a) * rr));
+  }
+  return g;
+}
+function tree(s = 1) {
+  const g = new THREE.Group();
+  g.add(mesh(new THREE.CylinderGeometry(.12 * s, .18 * s, .9 * s, 5), mat.trunk, 0, .45 * s, 0));
+  g.add(mesh(jitter(new THREE.ConeGeometry(.75 * s, 1.5 * s, 6), .15 * s), Math.random() > .5 ? mat.leaf : mat.leaf2, 0, 1.4 * s, 0));
+  g.add(mesh(jitter(new THREE.ConeGeometry(.55 * s, 1.1 * s, 6), .12 * s), mat.leaf, 0, 2.05 * s, 0));
+  return g;
+}
+function trees(g, r, n, avoid = 2.8) {
+  for (let i = 0; i < n; i++) {
+    let a, d, x, z, k = 0;
+    do { a = Math.random() * 6.28; d = r * (.35 + Math.random() * .55); x = Math.cos(a) * d; z = Math.sin(a) * d; k++; } while (Math.hypot(x, z) < avoid && k < 20);
+    const t = tree(.65 + Math.random() * .45); t.position.set(x, 0, z); t.rotation.y = Math.random() * 6; g.add(t);
+  }
+}
+
+/* =====================================================================
+   PROPS — what stands on each island. Each gets (group, island radius).
+   ===================================================================== */
+const PROPS = {
+  trees(g, r) { trees(g, r, 9, 1); },
+
+  house(g, r) {
+    const h = new THREE.Group();
+    h.add(mesh(new THREE.BoxGeometry(3, 2, 2.4), mat.white, 0, 1, 0));
+    const roof = new THREE.CylinderGeometry(0, 2.3, 1.6, 4, 1); roof.rotateY(Math.PI / 4); roof.scale(1.05, 1, .85);
+    h.add(mesh(roof, mat.red, 0, 2.8, 0));
+    h.add(mesh(new THREE.BoxGeometry(.6, 1.1, .1), mat.ink, 0, .55, 1.22));
+    [-.9, .9].forEach(x => h.add(mesh(new THREE.BoxGeometry(.55, .5, .1), mat.win, x, 1.25, 1.22)));
+    h.position.set(-1.6, 0, -1.2); h.rotation.y = .4; g.add(h);
+    const tent = mesh(new THREE.ConeGeometry(1.1, 1.6, 4), mat.yellow, 2.8, .8, 1.8); tent.rotation.y = .5; g.add(tent);
+    const fire = new THREE.Group(); fire.position.set(1.2, 0, 3.2); g.add(fire);
+    for (let i = 0; i < 5; i++) { const l = mesh(new THREE.CylinderGeometry(.07, .07, .8, 4), mat.trunk); l.rotation.z = Math.PI / 2; l.rotation.y = i * 1.25; l.position.y = .1; fire.add(l); }
+    const flame = mesh(new THREE.ConeGeometry(.28, .7, 5), new THREE.MeshStandardMaterial({ color: "#ff7a2f", emissive: "#ff5a1f", emissiveIntensity: 1.2, flatShading: true }), 0, .45, 0, false);
+    fire.add(flame); const fl = new THREE.PointLight("#ff8a3d", 0, 9, 1.6); fl.position.y = .8; fire.add(fl);
+    anim.push(t => { flame.scale.set(1 + Math.sin(t * 13) * .12, 1 + Math.sin(t * 9) * .2, 1 + Math.cos(t * 11) * .12); fl.intensity = 2 + world.glow * 14 + Math.sin(t * 17) * .6; });
+    g.add(mesh(new THREE.CylinderGeometry(.06, .06, 6, 5), mat.ink, -4.4, 3, 1.2));
+    const fg = new THREE.PlaneGeometry(1.8, 1.1, 8, 1); const flag = mesh(fg, new THREE.MeshStandardMaterial({ color: "#e2412b", side: THREE.DoubleSide, flatShading: true }), -3.5, 5.4, 1.2);
+    g.add(flag); const fb = Float32Array.from(fg.attributes.position.array);
+    anim.push(t => { const p = fg.attributes.position; for (let i = 0; i < p.count; i++) { const x = fb[i * 3]; p.setZ(i, Math.sin(t * 4 + x * 2.5) * .18 * (x + .9)); } p.needsUpdate = true; fg.computeVertexNormals(); });
+    trees(g, r, 9, 3.6);
+  },
+
+  bars(g, r) {
+    const hs = [2.2, 3.4, 2.8, 4.6, 3.1, 3.9];
+    const bars = hs.map((h, i) => { const geo = new THREE.BoxGeometry(.62, 1, .62); geo.translate(0, .5, 0); const b = mesh(geo, i === 3 ? mat.red : (i % 2 ? mat.ink : mat.grey), (i - 2.5) * .92, 0, 0); g.add(b); return b; });
+    const band = mesh(new THREE.BoxGeometry(6, .08, 1.2), new THREE.MeshStandardMaterial({ color: "#e2412b", transparent: true, opacity: .55 }), 0, 3.4, 0, false); g.add(band);
+    anim.push(t => { bars.forEach((b, i) => b.scale.y = hs[i] * (1 + Math.sin(t * 1.3 + i * 1.7) * .14)); band.position.y = 3.2 + Math.sin(t * .9) * .25; });
+    trees(g, r, 4, 3.4);
+  },
+
+  roads(g, r) {
+    const s = r / 5.6;
+    const nodes = [[-3.3, -1.8], [-.8, -3.2], [2.4, -2.4], [3.4, .6], [1, 2.8], [-2.4, 2.4], [0, 0]].map(([x, z]) => [x * s, z * s]);
+    const edges = [[0, 1], [1, 2], [2, 3], [3, 4], [4, 5], [5, 0], [6, 0], [6, 2], [6, 4], [6, 3], [1, 6]];
+    edges.forEach(([a, b]) => { const A = nodes[a], B = nodes[b], len = Math.hypot(B[0] - A[0], B[1] - A[1]); const rd = mesh(new THREE.BoxGeometry(len, .06, .38), mat.road, (A[0] + B[0]) / 2, .03, (A[1] + B[1]) / 2, false); rd.rotation.y = -Math.atan2(B[1] - A[1], B[0] - A[0]); g.add(rd); });
+    nodes.forEach(([x, z]) => g.add(mesh(new THREE.CylinderGeometry(.3, .3, .1, 8), mat.white, x, .07, z, false)));
+    const adj = nodes.map((_, i) => edges.filter(e => e.includes(i)).map(e => e[0] === i ? e[1] : e[0]));
+    const agents = [0, 3, 5].map((start, k) => {
+      const car = new THREE.Group();
+      car.add(mesh(new THREE.BoxGeometry(.5, .28, .32), k === 1 ? mat.red : mat.blue, 0, .24, 0));
+      car.add(mesh(new THREE.BoxGeometry(.28, .16, .28), mat.white, -.03, .45, 0));
+      const siren = mesh(new THREE.BoxGeometry(.11, .09, .11), new THREE.MeshStandardMaterial({ color: "#7fa8ff", emissive: "#4f7dff", emissiveIntensity: 1 }), 0, .58, 0, false); car.add(siren);
+      g.add(car); return { car, siren, from: start, to: adj[start][0], u: 0, speed: .45 + k * .12 };
+    });
+    anim.push((t, dt) => agents.forEach(a => {
+      a.u += dt * a.speed / Math.hypot(nodes[a.to][0] - nodes[a.from][0], nodes[a.to][1] - nodes[a.from][1]) * 1.6;
+      if (a.u >= 1) { a.u = 0; const prev = a.from; a.from = a.to; const o = adj[a.from].filter(n => n !== prev); a.to = o[Math.floor(Math.random() * o.length)] ?? prev; }
+      const A = nodes[a.from], B = nodes[a.to];
+      a.car.position.set(A[0] + (B[0] - A[0]) * a.u, .06, A[1] + (B[1] - A[1]) * a.u);
+      a.car.rotation.y = -Math.atan2(B[1] - A[1], B[0] - A[0]);
+      a.siren.material.emissiveIntensity = (Math.sin(t * 12) > 0 ? 2 : .3) * (.4 + world.glow);
+    }));
+    trees(g, r, 3, 4);
+  },
+
+  office(g, r) {
+    const b = new THREE.Group();
+    b.add(mesh(new THREE.BoxGeometry(2, 4.2, 2), mat.white, 0, 2.1, 0));
+    for (let y = 0; y < 4; y++) for (let s = -1; s <= 1; s += 2) b.add(mesh(new THREE.BoxGeometry(.45, .42, .05), mat.win, s * .45, .85 + y * .9, 1.02, false));
+    b.add(mesh(new THREE.BoxGeometry(2.2, .25, 2.2), mat.ink, 0, 4.3, 0));
+    b.position.set(-2, 0, 0); g.add(b);
+    const cols = [mat.red, mat.blue, mat.yellow];
+    const bins = [[2.2, -2], [2.7, 0], [2.2, 2]];
+    bins.forEach(([x, z], i) => { const m = cols[i].clone(); m.side = THREE.DoubleSide; g.add(mesh(new THREE.CylinderGeometry(.62, .5, .85, 7, 1, true), m, x, .42, z)); });
+    const balls = []; const bg = new THREE.IcosahedronGeometry(.17, 0);
+    for (let i = 0; i < 14; i++) { const m = mesh(bg, cols[i % 3], 0, -10, 0); g.add(m); balls.push({ m, k: i % 3, u: -i / 14 }); }
+    anim.push((t, dt) => balls.forEach(B => {
+      B.u += dt * .38; if (B.u > 1) { B.u = 0; B.k = Math.floor(Math.random() * 3); B.m.material = cols[B.k]; }
+      if (B.u < 0) { B.m.visible = false; return; } B.m.visible = true;
+      const s = [-2, 4.6, 0], e = [bins[B.k][0], .7, bins[B.k][1]], u = B.u;
+      B.m.position.set(s[0] + (e[0] - s[0]) * u, s[1] + (e[1] - s[1]) * u + Math.sin(u * Math.PI) * 2.2, s[2] + (e[2] - s[2]) * u);
+    }));
+    trees(g, r, 3, 3.8);
+  },
+
+  factory(g, r) {
+    const f = new THREE.Group();
+    f.add(mesh(new THREE.BoxGeometry(4.6, 1.7, 2.6), mat.grey, 0, .85, 0));
+    for (let i = 0; i < 4; i++) { const tooth = new THREE.CylinderGeometry(.01, 1, 1, 3, 1); tooth.rotateZ(Math.PI / 2); tooth.rotateX(Math.PI / 2); const m = mesh(tooth, i % 2 ? mat.red : mat.ink, -1.75 + i * 1.15, 2.05, 0); m.scale.set(1, .75, 2.6); f.add(m); }
+    for (let i = 0; i < 5; i++) f.add(mesh(new THREE.BoxGeometry(.5, .45, .05), mat.win, -1.8 + i * .9, .85, 1.32, false));
+    f.add(mesh(new THREE.CylinderGeometry(.26, .36, 3.4, 7), mat.red, 1.9, 1.7, -.75));
+    f.position.set(-.4, 0, -.5); f.rotation.y = -.3; g.add(f);
+    const puffs = [];
+    for (let i = 0; i < 7; i++) { const p = mesh(new THREE.IcosahedronGeometry(.33, 0), new THREE.MeshStandardMaterial({ color: "#e9e4da", transparent: true, opacity: .8, flatShading: true }), 0, 0, 0, false); f.add(p); puffs.push({ p, u: i / 7 }); }
+    anim.push((t, dt) => puffs.forEach(P => { P.u = (P.u + dt * .18) % 1; P.p.position.set(1.9 + P.u * 1.2, 3.5 + P.u * 3, -.75 + Math.sin(P.u * 5) * .3); P.p.scale.setScalar(.6 + P.u * 1.6); P.p.material.opacity = .85 * (1 - P.u); }));
+    trees(g, r, 3, 3.8);
+  },
+
+  school(g, r) {
+    const s = new THREE.Group();
+    [[5.2, 3.6, 0], [4.8, 3.2, .25], [4.4, 2.8, .5]].forEach(([w, d, y]) => s.add(mesh(new THREE.BoxGeometry(w, .25, d), mat.white, 0, y + .12, 0)));
+    for (let i = 0; i < 5; i++) for (const z of [-1.1, 1.1]) s.add(mesh(new THREE.CylinderGeometry(.18, .2, 2.4, 8), mat.white, -1.8 + i * .9, 1.95, z));
+    s.add(mesh(new THREE.BoxGeometry(4.4, .3, 2.8), mat.white, 0, 3.3, 0));
+    const ped = new THREE.CylinderGeometry(0, 2.5, 1, 3, 1); ped.rotateX(Math.PI / 2); ped.rotateZ(Math.PI / 2); ped.rotateY(Math.PI / 2);
+    const pm = mesh(ped, mat.blue, 0, 3.95, 0); pm.scale.set(1, .8, 1.15); s.add(pm);
+    s.add(mesh(new THREE.BoxGeometry(2.2, 2.2, .1), mat.win, 0, 1.6, 0));
+    s.rotation.y = .3; g.add(s);
+    // graduation caps tossed in the air
+    const caps = [];
+    for (let i = 0; i < 3; i++) { const c = new THREE.Group(); c.add(mesh(new THREE.BoxGeometry(.7, .06, .7), mat.ink)); c.add(mesh(new THREE.CylinderGeometry(.22, .22, .2, 6), mat.ink, 0, -.12, 0)); g.add(c); caps.push(c); }
+    anim.push(t => caps.forEach((c, i) => { const u = (t * .35 + i / 3) % 1; c.position.set(-2.6 + i * 2.6, 4.6 + Math.sin(u * Math.PI) * 3, 2.4); c.rotation.set(u * 6, u * 4 + i, 0); c.visible = u < .98; }));
+    trees(g, r, 4, 3.6);
+  },
+
+  tensor(g, r) {
+    const cube = new THREE.Group(); g.add(cube);
+    const cg = new THREE.BoxGeometry(.72, .72, .72);
+    const cells = [], sliceMats = [mat.red, mat.ink, mat.grey];
+    for (let x = -1; x <= 1; x++) for (let y = -1; y <= 1; y++) for (let z = -1; z <= 1; z++) {
+      const c = mesh(cg, mat.white, x * .82, y * .82, z * .82);
+      c.add(new THREE.LineSegments(new THREE.EdgesGeometry(cg), new THREE.LineBasicMaterial({ color: "#22201c" })));
+      cube.add(c); cells.push({ c, x, y, z });
+    }
+    g.add(mesh(new THREE.CylinderGeometry(.9, 1.2, 1.2, 6), mat.rock, 0, .6, 0));
+    anim.push(t => {
+      const cyc = (t * .22) % 3, axis = Math.floor(cyc), ph = cyc - axis;
+      const s = Math.max(0, Math.sin(Math.min(1, ph * 1.25) * Math.PI)), sp = s * 1.25;
+      cells.forEach(({ c, x, y, z }) => {
+        const k = [x, y, z][axis];
+        c.position.set(x * .82 + (axis === 0 ? k * sp : 0), y * .82 + (axis === 1 ? k * sp : 0), z * .82 + (axis === 2 ? k * sp : 0));
+        c.material = s > .15 ? sliceMats[k + 1] : mat.white;
+      });
+      cube.rotation.y = t * .35; cube.rotation.x = Math.sin(t * .3) * .25; cube.position.y = 3.8 + Math.sin(t * 1.1) * .25;
+    });
+    trees(g, r, 5, 3);
+  },
+
+  lighthouse(g, r) {
+    const lh = new THREE.Group();
+    for (let i = 0; i < 6; i++) lh.add(mesh(new THREE.CylinderGeometry(.95 - i * .08 - .08, .95 - i * .08, 1, 9), i % 2 ? mat.white : mat.ink, 0, .5 + i, 0));
+    lh.add(mesh(new THREE.CylinderGeometry(.75, .75, .15, 9), mat.ink, 0, 6.05, 0));
+    const lamp = mesh(new THREE.CylinderGeometry(.42, .42, .8, 8), mat.lamp, 0, 6.5, 0, false); lh.add(lamp);
+    lh.add(mesh(new THREE.ConeGeometry(.6, .8, 9), mat.red, 0, 7.3, 0));
+    const bgeo = new THREE.ConeGeometry(1.6, 14, 16, 1, true); bgeo.translate(0, -7, 0); bgeo.rotateZ(Math.PI / 2);
+    const beam = new THREE.Mesh(bgeo, new THREE.MeshBasicMaterial({ color: "#fff1b3", transparent: true, opacity: 0, depthWrite: false, side: THREE.DoubleSide, blending: THREE.AdditiveBlending }));
+    beam.position.y = 6.5; lh.add(beam);
+    const spot = new THREE.PointLight("#ffe08a", 0, 30, 1.4); spot.position.y = 6.6; lh.add(spot);
+    lh.position.set(1.2, 0, -.5); g.add(lh);
+    anim.push(t => { beam.rotation.y = t * 1.1; beam.material.opacity = world.glow * .32; spot.intensity = world.glow * 40; lamp.material.emissiveIntensity = .4 + world.glow * 2.4; });
+    const cot = new THREE.Group();
+    cot.add(mesh(new THREE.BoxGeometry(1.6, 1.1, 1.3), mat.white, 0, .55, 0));
+    const r2 = new THREE.CylinderGeometry(0, 1.3, .9, 4); r2.rotateY(Math.PI / 4); r2.scale(1, 1, .8); cot.add(mesh(r2, mat.red, 0, 1.55, 0));
+    cot.add(mesh(new THREE.BoxGeometry(.38, .32, .05), mat.win, .35, .65, .66, false));
+    cot.position.set(-2.1, 0, 1.3); cot.rotation.y = .6; g.add(cot);
+    trees(g, r, 3, 3.4);
+  },
+
+  arcade(g, r) {
+    const a = new THREE.Group();
+    a.add(mesh(new THREE.BoxGeometry(1.6, 3.4, 1.4), mat.ink, 0, 1.7, 0));
+    const scr = mesh(new THREE.BoxGeometry(1.25, 1, .08), mat.screen, 0, 2.45, .72, false); scr.rotation.x = -.2; a.add(scr);
+    a.add(mesh(new THREE.BoxGeometry(1.6, .3, .9), mat.red, 0, 1.55, .9));
+    a.add(mesh(new THREE.CylinderGeometry(.05, .05, .35, 5), mat.ink, -.35, 1.85, 1));
+    a.add(mesh(new THREE.SphereGeometry(.12, 6, 4), mat.red, -.35, 2.05, 1));
+    [.15, .45].forEach(x => a.add(mesh(new THREE.CylinderGeometry(.09, .09, .06, 8), mat.yellow, x, 1.73, 1)));
+    a.add(mesh(new THREE.BoxGeometry(1.7, .45, 1.5), mat.yellow, 0, 3.55, 0));
+    a.rotation.y = .4; g.add(a);
+    // floating pixel "player"
+    const px = new THREE.Group(); const pm = mat.red;
+    [[0, 0], [1, 0], [0, 1], [1, 1], [-1, 1], [2, 1], [0, 2], [1, 2]].forEach(([x, y]) => px.add(mesh(new THREE.BoxGeometry(.3, .3, .3), pm, x * .3, y * .3, 0)));
+    px.position.set(1.6, 4.6, -1); g.add(px);
+    anim.push(t => { px.position.y = 4.6 + Math.abs(Math.sin(t * 2.4)) * 1.1; px.rotation.y = t; mat.screen.emissiveIntensity = .5 + world.glow * 1.8 + (Math.sin(t * 8) > .6 ? .4 : 0); });
+    trees(g, r, 4, 3);
+  },
+
+  chess(g, r) {
+    const b = new THREE.Group();
+    for (let i = 0; i < 4; i++) for (let j = 0; j < 4; j++) b.add(mesh(new THREE.BoxGeometry(.9, .12, .9), (i + j) % 2 ? mat.ink : mat.white, (i - 1.5) * .9, .06, (j - 1.5) * .9, false));
+    b.position.set(1.4, 0, 1); b.rotation.y = .3; g.add(b);
+    const piece = (h, col, crown) => {
+      const p = new THREE.Group();
+      p.add(mesh(new THREE.CylinderGeometry(.55 * h, .7 * h, .3 * h, 10), col, 0, .15 * h, 0));
+      p.add(mesh(new THREE.CylinderGeometry(.25 * h, .45 * h, 1.6 * h, 10), col, 0, 1.1 * h, 0));
+      p.add(mesh(new THREE.CylinderGeometry(.45 * h, .32 * h, .25 * h, 10), col, 0, 1.95 * h, 0));
+      if (crown) { p.add(mesh(new THREE.BoxGeometry(.14 * h, .7 * h, .14 * h), col, 0, 2.45 * h, 0)); p.add(mesh(new THREE.BoxGeometry(.45 * h, .14 * h, .14 * h), col, 0, 2.55 * h, 0)); }
+      else p.add(mesh(new THREE.SphereGeometry(.32 * h, 8, 6), col, 0, 2.3 * h, 0));
+      return p;
+    };
+    const king = piece(1.5, mat.ink, true); king.position.set(-1.8, 0, -1.2); g.add(king);
+    const pawn = piece(.55, mat.white, false); g.add(pawn);
+    anim.push(t => { const u = (t * .25) % 1, j = Math.floor((t * .25) % 4); pawn.position.set(1.4 + (j - 1.5) * .9 * .95, .12 + Math.sin(u * Math.PI) * .5, 1 + ((u * 4) % 4 - 1.5) * .9 * .3); });
+    trees(g, r, 4, 3.4);
+  },
+
+  music(g, r) {
+    const gt = new THREE.Group();
+    const body1 = mesh(new THREE.CylinderGeometry(1.2, 1.2, .5, 12), mat.wood, 0, 0, 0); body1.rotation.x = Math.PI / 2;
+    const body2 = mesh(new THREE.CylinderGeometry(.9, .9, .5, 12), mat.wood, 0, 1.55, 0); body2.rotation.x = Math.PI / 2;
+    const hole = mesh(new THREE.CylinderGeometry(.32, .32, .52, 10), mat.ink, 0, .75, 0); hole.rotation.x = Math.PI / 2;
+    gt.add(body1, body2, hole);
+    gt.add(mesh(new THREE.BoxGeometry(.32, 3, .2), mat.woodD, 0, 3.6, .1));
+    gt.add(mesh(new THREE.BoxGeometry(.5, .7, .22), mat.ink, 0, 5.4, .1));
+    gt.position.set(-1.2, 1.6, -.4); gt.rotation.set(-.35, .5, .25); g.add(gt);
+    const ney = mesh(new THREE.CylinderGeometry(.09, .1, 4.4, 8), mat.woodD, 1.8, 1.4, .8); ney.rotation.z = -1.15; ney.rotation.y = .4; g.add(ney);
+    const notes = [];
+    for (let i = 0; i < 5; i++) {
+      const n = new THREE.Group();
+      const head = mesh(new THREE.SphereGeometry(.2, 6, 4), mat.ink); head.scale.set(1.3, .9, .9); n.add(head);
+      n.add(mesh(new THREE.BoxGeometry(.05, .65, .05), mat.ink, .22, .32, 0));
+      g.add(n); notes.push({ n, u: i / 5, x: (Math.random() - .5) * 3 });
+    }
+    anim.push((t, dt) => notes.forEach(N => { N.u = (N.u + dt * .15) % 1; N.n.position.set(N.x + Math.sin(N.u * 8) * .4, 2 + N.u * 5, -.5); N.n.scale.setScalar(Math.sin(N.u * Math.PI) * 1.1 + .01); }));
+    trees(g, r, 4, 3.4);
+  },
+
+  radio(g, r) {
+    const tw = new THREE.Group();
+    const legs = 3, H = 7;
+    for (let i = 0; i < legs; i++) { const a = i / legs * Math.PI * 2; const leg = mesh(new THREE.CylinderGeometry(.06, .08, H, 4), mat.red, Math.cos(a) * .55, H / 2, Math.sin(a) * .55); leg.rotation.set(Math.sin(a) * .08, 0, -Math.cos(a) * .08); tw.add(leg); }
+    for (let k = 0; k < 6; k++) { const ring = mesh(new THREE.TorusGeometry(.62 - k * .07, .04, 4, 3), k % 2 ? mat.white : mat.red, 0, .9 + k * 1.1, 0); ring.rotation.x = Math.PI / 2; tw.add(ring); }
+    const beacon = mesh(new THREE.SphereGeometry(.22, 8, 6), new THREE.MeshStandardMaterial({ color: "#ff5a3d", emissive: "#ff2a10", emissiveIntensity: 1 }), 0, H + .2, 0, false); tw.add(beacon);
+    const dish = mesh(new THREE.CylinderGeometry(.5, .5, .1, 12), mat.white, .55, 5.4, 0); dish.rotation.z = 1.2; tw.add(dish);
+    g.add(tw);
+    const rings = [];
+    for (let i = 0; i < 3; i++) { const m = new THREE.Mesh(new THREE.TorusGeometry(1, .05, 4, 32), new THREE.MeshBasicMaterial({ color: "#e2412b", transparent: true, opacity: .6 })); m.rotation.x = Math.PI / 2; m.position.y = H; tw.add(m); rings.push({ m, u: i / 3 }); }
+    anim.push((t, dt) => { beacon.material.emissiveIntensity = Math.sin(t * 4) > 0 ? 2 + world.glow * 3 : .2; rings.forEach(R => { R.u = (R.u + dt * .35) % 1; R.m.scale.setScalar(.5 + R.u * 5); R.m.material.opacity = .6 * (1 - R.u); }); });
+    const shed = mesh(new THREE.BoxGeometry(1.6, 1.1, 1.3), mat.grey, -2.2, .55, 1.2); g.add(shed);
+    g.add(mesh(new THREE.BoxGeometry(.4, .35, .05), mat.win, -1.9, .65, 1.86, false));
+    trees(g, r, 4, 3.2);
+  },
+
+  rocket(g, r) {
+    g.add(mesh(new THREE.CylinderGeometry(1.5, 1.7, .4, 8), mat.grey, 0, .2, 0));
+    const tower = new THREE.Group();
+    for (let i = 0; i < 6; i++) tower.add(mesh(new THREE.BoxGeometry(.5, .08, .5), mat.red, 0, .6 + i * .9, 0));
+    for (const [x, z] of [[-.22, -.22], [.22, -.22], [-.22, .22], [.22, .22]]) tower.add(mesh(new THREE.BoxGeometry(.06, 5.6, .06), mat.red, x, 3, z));
+    tower.position.set(-1.6, 0, 0); g.add(tower);
+    const rk = new THREE.Group();
+    rk.add(mesh(new THREE.CylinderGeometry(.55, .55, 3.4, 10), mat.white, 0, 2.1, 0));
+    rk.add(mesh(new THREE.CylinderGeometry(.56, .56, .5, 10), mat.ink, 0, 3, 0));
+    rk.add(mesh(new THREE.ConeGeometry(.55, 1.2, 10), mat.red, 0, 4.4, 0));
+    for (let i = 0; i < 3; i++) { const f = mesh(new THREE.BoxGeometry(.08, .9, .7), mat.ink, Math.cos(i * 2.09) * .55, .75, Math.sin(i * 2.09) * .55); f.rotation.y = -i * 2.09; rk.add(f); }
+    const flameM = new THREE.MeshStandardMaterial({ color: "#ff7a2f", emissive: "#ff5a1f", emissiveIntensity: 1.4, flatShading: true });
+    const flame = mesh(new THREE.ConeGeometry(.38, 1.1, 7), flameM, 0, -.05, 0, false); flame.rotation.x = Math.PI; rk.add(flame);
+    g.add(rk);
+    const puffs = [];
+    for (let i = 0; i < 8; i++) { const p = mesh(new THREE.IcosahedronGeometry(.35, 0), new THREE.MeshStandardMaterial({ color: "#efeae0", transparent: true, opacity: .8, flatShading: true }), 0, 0, 0, false); g.add(p); puffs.push({ p, u: i / 8, a: i * .8 }); }
+    anim.push((t, dt) => {
+      const cyc = (t * .12) % 1, up = cyc < .6 ? 0 : Math.pow((cyc - .6) / .4, 2) * 9;
+      rk.position.y = .4 + up + Math.sin(t * 30) * .02 * (up > 0 ? 1 : 0);
+      flame.visible = cyc > .5; flame.scale.y = 1 + Math.sin(t * 25) * .2;
+      puffs.forEach(P => { P.u = (P.u + dt * .5) % 1; const on = cyc > .5; P.p.visible = on; P.p.position.set(Math.cos(P.a) * P.u * 2.2, .3 + P.u * .4, Math.sin(P.a) * P.u * 2.2); P.p.scale.setScalar(.5 + P.u * 1.4); P.p.material.opacity = .8 * (1 - P.u); });
+    });
+    trees(g, r, 4, 3);
+  },
+
+  offclock(g, r) {
+    // a small collection: lighthouse, arcade, chess and instruments on one island
+    [["lighthouse", [-2.6, -2.2], .75], ["arcade", [2.8, -2], .62], ["chess", [2.6, 2.6], .62], ["music", [-2.6, 2.6], .6]].forEach(([p, [x, z], s]) => {
+      const sg = new THREE.Group(); sg.position.set(x, 0, z); sg.scale.setScalar(s); g.add(sg); PROPS[p](sg, 1.6);
+    });
+  },
+
+  camera(g, r) {
+    const c = new THREE.Group();
+    c.add(mesh(new THREE.BoxGeometry(2.6, 1.6, 1.2), mat.ink, 0, 0, 0));
+    c.add(mesh(new THREE.BoxGeometry(.9, .45, .9), mat.ink, -.6, .95, 0));
+    const lens = mesh(new THREE.CylinderGeometry(.55, .62, .9, 12), mat.grey, .2, 0, .95); lens.rotation.x = Math.PI / 2; c.add(lens);
+    const glass = mesh(new THREE.CylinderGeometry(.4, .4, .05, 12), mat.screen, .2, 0, 1.42, false); glass.rotation.x = Math.PI / 2; c.add(glass);
+    c.add(mesh(new THREE.BoxGeometry(.3, .18, .3), mat.red, .9, .9, 0));
+    const flashM = new THREE.MeshStandardMaterial({ color: "#ffffff", emissive: "#ffffff", emissiveIntensity: 0 });
+    c.add(mesh(new THREE.BoxGeometry(.5, .3, .05), flashM, -.75, .5, .62, false));
+    const fl = new THREE.PointLight("#ffffff", 0, 14, 1.5); fl.position.set(-.75, .5, 1.5); c.add(fl);
+    c.position.set(0, 2.4, 0); c.rotation.y = .5; g.add(c);
+    g.add(mesh(new THREE.CylinderGeometry(.08, .08, 1.6, 5), mat.ink, 0, .8, 0));
+    anim.push(t => { const u = (t * .3) % 1, f = u < .04 ? 1 - u / .04 : 0; flashM.emissiveIntensity = f * 3; fl.intensity = f * 60; c.position.y = 2.4 + Math.sin(t * .9) * .15; });
+    trees(g, r, 5, 3);
+  },
+};
+
+/* ---------- build islands ---------- */
+const groups = [];
+ISLANDS.forEach((I, idx) => {
+  const root = new THREE.Group(); root.position.set(I.pos[0], 0, I.pos[1]);
+  root.add(makeIsland(I.r));
+  const deco = new THREE.Group(); deco.position.y = 1.7; root.add(deco);
+  deco.rotation.y = Math.atan2(-I.pos[0], -I.pos[1]) + Math.PI * .1; // props face roughly toward the centre
+  (PROPS[I.prop] || PROPS.trees)(deco, I.r);
+  root.traverse(o => o.userData.island = idx);
+  I.root = root; I.bob = Math.random() * 6; I.idx = idx;
+  scene.add(root); groups.push(root);
+});
+
+/* ---------- bridges inside districts + foam ---------- */
+function bridge(A, B) {
+  const dx = B.pos[0] - A.pos[0], dz = B.pos[1] - A.pos[1], d = Math.hypot(dx, dz);
+  const len = d - A.r - B.r + 1.2; if (len < 1) return;
+  const g = new THREE.Group();
+  const mid = [(A.pos[0] + dx * (A.r - .6) / d + B.pos[0] - dx * (B.r - .6) / d) / 2, (A.pos[1] + dz * (A.r - .6) / d + B.pos[1] - dz * (B.r - .6) / d) / 2];
+  g.position.set(mid[0], 0, mid[1]); g.rotation.y = -Math.atan2(dz, dx);
+  const n = Math.max(3, Math.round(len / .45));
+  for (let i = 0; i < n; i++) { const x = -len / 2 + (i + .5) * len / n; const y = 1.2 + Math.sin((i + .5) / n * Math.PI) * .5; const pl = mesh(new THREE.BoxGeometry(len / n * .85, .12, 1.3), i % 2 ? mat.wood : mat.woodD, x, y, 0); pl.rotation.z = Math.cos((i + .5) / n * Math.PI) * -.12; g.add(pl); }
+  for (const s of [-.7, .7]) for (let i = 1; i < 4; i++) { const x = -len / 2 + i * len / 4; g.add(mesh(new THREE.CylinderGeometry(.07, .07, 2.4, 4), mat.woodD, x, .6, s)); }
+  scene.add(g);
+}
+DISTRICTS.forEach(d => { const L = d.islands; if (L.length > 1) L.forEach((I, k) => { if (L.length > 2 || k === 0) bridge(I, L[(k + 1) % L.length]); }); });
+const foams = ISLANDS.map(I => {
+  const f = new THREE.Mesh(new THREE.RingGeometry(I.r * 1.32, I.r * 1.4, 18), new THREE.MeshBasicMaterial({ color: "#ffffff", transparent: true, opacity: .3, depthWrite: false }));
+  f.rotation.x = -Math.PI / 2; f.position.set(I.pos[0], .25, I.pos[1]); scene.add(f); return f;
+});
+anim.push(t => foams.forEach((f, i) => { const k = 1 + Math.sin(t * 1.2 + i) * .04; f.scale.set(k, k, 1); f.material.opacity = (.22 + Math.sin(t * 1.2 + i) * .1) * (1 - world.glow * .6); }));
+
+/* ---------- district markers: a buoy with a coloured flag ---------- */
+DISTRICTS.forEach(d => {
+  if (d.islands.length < 2) return;
+  const b = new THREE.Group(); b.position.set(d.c[0], 0, d.c[1]);
+  b.add(mesh(new THREE.CylinderGeometry(.8, 1, 1, 8), mat.white, 0, .3, 0));
+  b.add(mesh(new THREE.CylinderGeometry(.06, .06, 4, 5), mat.ink, 0, 2.6, 0));
+  const fm = new THREE.MeshStandardMaterial({ color: d.color, side: THREE.DoubleSide, flatShading: true });
+  b.add(mesh(new THREE.PlaneGeometry(1.6, 1, 1, 1), fm, .8, 4.1, 0));
+  scene.add(b); d.buoy = b;
+  anim.push(t => { b.position.y = Math.sin(t * 1.4 + d.angle) * .2; b.rotation.z = Math.sin(t * 1.1 + d.angle) * .06; });
+});
+
+/* ---------- birds ---------- */
+const birds = [];
+for (let i = 0; i < 12; i++) {
+  const g = new THREE.Group(), bm = new THREE.MeshBasicMaterial({ color: "#22201c", side: THREE.DoubleSide });
+  const geo = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0, 0, 0), new THREE.Vector3(-.7, .1, .35), new THREE.Vector3(0, 0, .5)]);
+  const w1 = new THREE.Mesh(geo, bm), w2 = new THREE.Mesh(geo, bm); w2.scale.x = -1; g.add(w1, w2); g.scale.setScalar(.7); scene.add(g);
+  birds.push({ g, w1, w2, r: 20 + Math.random() * 60, h: 16 + Math.random() * 10, s: .06 + Math.random() * .06, o: Math.random() * 6.28 });
+}
+anim.push(t => birds.forEach(b => { const a = t * b.s + b.o; b.g.position.set(Math.cos(a) * b.r, b.h + Math.sin(t + b.o) * .6, Math.sin(a) * b.r); b.g.rotation.y = -a; const f = Math.sin(t * 8 + b.o) * .5; b.w1.rotation.z = f; b.w2.rotation.z = -f; }));
+
+/* ---------- labels + index ---------- */
+const labelsEl = document.getElementById("labels"), indexEl = document.getElementById("index");
+ISLANDS.forEach(I => {
+  const el = document.createElement("div"); el.className = "tag lab";
+  el.innerHTML = `<div class="box"><div class="row"><em>${I.no}</em>${I.name}</div><small>${I.sub}</small></div><div class="stem"></div>`;
+  labelsEl.appendChild(el); I.label = el;
+});
+DISTRICTS.forEach((d, k) => {
+  const el = document.createElement("button"); el.className = "district";
+  el.innerHTML = `<b>${d.name}</b><span class="lab">${d.sub}${d.islands.length > 1 ? " · " + d.islands.length + " islands" : ""}</span>`;
+  el.addEventListener("click", () => focusDistrict(k)); labelsEl.appendChild(el); d.label = el;
+});
+const home = ORDER[0];
+{
+  const g = document.createElement("div"); g.className = "grp";
+  g.innerHTML = `<ul><li><button data-i="${home.idx}"><span>${home.no}</span>${home.name}</button></li></ul>`;
+  indexEl.appendChild(g);
+}
+DISTRICTS.forEach((d, k) => {
+  const g = document.createElement("div"); g.className = "grp";
+  g.innerHTML = `<button class="gh lab" data-d="${k}"><span><i style="background:${d.color}"></i>${d.name}</span><span>${d.islands.length}</span></button><ul>${d.islands.map(I => `<li><button data-i="${I.idx}"><span>${I.no}</span>${I.name}</button></li>`).join("")}</ul>`;
+  indexEl.appendChild(g); d.head = g.querySelector(".gh");
+});
+indexEl.addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; if (b.dataset.i) focus(+b.dataset.i); else focusDistrict(+b.dataset.d); });
+ISLANDS.forEach(I => I.btn = indexEl.querySelector(`[data-i="${I.idx}"]`));
+
+/* ---------- camera flights ---------- */
+const flight = { on: false, t: 0, dur: 1.8, p0: new THREE.Vector3(), p1: new THREE.Vector3(), q0: new THREE.Vector3(), q1: new THREE.Vector3(), lift: 12 };
+const ease = x => x < .5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+function flyTo(pos, target, dur = 2, lift = 14) { flight.p0.copy(camera.position); flight.p1.copy(pos); flight.q0.copy(controls.target); flight.q1.copy(target); flight.t = 0; flight.dur = reduce ? .01 : dur; flight.lift = lift; flight.on = true; }
+
+/* ---------- focus logic ---------- */
+const panel = document.getElementById("panel"), pbody = document.getElementById("pbody"), pcount = document.getElementById("pcount");
+let active = -1, activeD = -1, hover = -1;
+const outDir = (x, z) => { const v = new THREE.Vector3(x, 0, z); if (v.length() < 1) v.set(.6, 0, .8); return v.normalize(); };
+function setOn() {
+  ISLANDS.forEach(I => I.btn.classList.toggle("on", I.idx === active));
+  DISTRICTS.forEach((d, k) => d.head.classList.toggle("on", k === activeD));
+}
+function openPanel(html, head) {
+  pbody.innerHTML = html; pbody.scrollTop = 0; pcount.innerHTML = head;
+  panel.classList.add("open"); document.body.classList.add("open"); controls.autoRotate = false; hideHint();
+}
+function focus(i) {
+  const I = ISLANDS[i]; active = i; activeD = DISTRICTS.findIndex(d => d.id === I.district);
+  const p = new THREE.Vector3(I.pos[0], 2.5, I.pos[1]), dir = outDir(I.pos[0], I.pos[1]), side = new THREE.Vector3(-dir.z, 0, dir.x);
+  flyTo(p.clone().addScaledVector(dir, 38).addScaledVector(side, -7).add(new THREE.Vector3(0, 35, 0)), p.clone().add(new THREE.Vector3(0, 1, 0)));
+  const k = ORDER.indexOf(I), N = ORDER[(k + 1) % ORDER.length], dist = activeD >= 0 ? DISTRICTS[activeD] : null;
+  openPanel(document.getElementById("c-" + I.id).innerHTML +
+    `<div class="pfoot lab"><button data-go="up"><small>Back to</small>${dist ? dist.name : "Overview"}</button><button class="nx" data-go="next"><small>Next island</small>${N.no} ${N.name} →</button></div>`,
+    `${I.no} · ${dist ? dist.name + " · " : ""}${I.name}`);
+  pbody.querySelector('[data-go="up"]').onclick = () => dist ? focusDistrict(activeD) : unfocus();
+  pbody.querySelector('[data-go="next"]').onclick = () => focus(N.idx);
+  setOn();
+  history.replaceState(null, "", "#" + I.id);
+}
+function focusDistrict(k) {
+  const d = DISTRICTS[k]; active = -1; activeD = k;
+  const c = new THREE.Vector3(d.c[0], 0, d.c[1]), dir = outDir(d.c[0], d.c[1]), side = new THREE.Vector3(-dir.z, 0, dir.x), far = 46 + d.ring * 2.2;
+  flyTo(c.clone().addScaledVector(dir, far * .8).addScaledVector(side, -8).add(new THREE.Vector3(0, far * .8, 0)), c);
+  openPanel(`<span class="lab kick">District</span><h2>${d.name}</h2><p class="role">${d.sub}</p>
+    <ul class="dlist">${d.islands.map(I => `<li><button data-i="${I.idx}">${I.no} ${I.name}</button><span>${I.sub}</span></li>`).join("")}</ul>
+    <div class="pfoot lab"><button data-go="up"><small>Back to</small>Overview</button><button class="nx" data-go="first"><small>Start with</small>${d.islands[0].name} →</button></div>`,
+    `District · ${d.name}`);
+  pbody.querySelectorAll(".dlist button").forEach(b => b.onclick = () => focus(+b.dataset.i));
+  pbody.querySelector('[data-go="up"]').onclick = unfocus;
+  pbody.querySelector('[data-go="first"]').onclick = () => focus(d.islands[0].idx);
+  setOn();
+  history.replaceState(null, "", "#" + d.id);
+}
+function unfocus() {
+  if (location.hash) history.replaceState(null, "", location.pathname);
+  active = -1; activeD = -1; panel.classList.remove("open"); document.body.classList.remove("open");
+  flyTo(HOME_CAM, new THREE.Vector3(0, 0, 0), 2.2, 6); controls.autoRotate = !reduce; setOn();
+}
+const step = s => { if (active >= 0) { const k = ORDER.indexOf(ISLANDS[active]); focus(ORDER[(k + s + ORDER.length) % ORDER.length].idx); } else if (activeD >= 0) focusDistrict((activeD + s + DISTRICTS.length) % DISTRICTS.length); };
+document.getElementById("close").onclick = unfocus;
+document.getElementById("next").onclick = () => step(1);
+document.getElementById("prev").onclick = () => step(-1);
+document.getElementById("tour").onclick = () => focus(ORDER[0].idx);
+addEventListener("keydown", e => { if (e.key === "Escape") { if (quick.classList.contains("on")) { closeQuick(); return; } unfocus(); } if (e.key === "ArrowRight") step(1); if (e.key === "ArrowLeft") step(-1); });
+
+/* ---------- pointer ---------- */
+const ray = new THREE.Raycaster(), ptr = new THREE.Vector2(-9, -9);
+let downAt = null;
+canvas.addEventListener("pointermove", e => ptr.set(e.clientX / innerWidth * 2 - 1, -(e.clientY / innerHeight) * 2 + 1));
+canvas.addEventListener("pointerdown", e => downAt = [e.clientX, e.clientY]);
+canvas.addEventListener("pointerup", e => { if (downAt && Math.hypot(e.clientX - downAt[0], e.clientY - downAt[1]) < 5 && hover >= 0) focus(hover); downAt = null; });
+const hintEl = document.getElementById("hint"); let hinted = false;
+function hideHint() { if (!hinted) { hinted = true; hintEl.style.opacity = 0; } }
+controls.addEventListener("start", () => { flight.on = false; hideHint(); });
+
+/* ---------- night ---------- */
+const nb = document.getElementById("night");
+nb.onclick = () => { world.goal = world.goal ? 0 : 1; document.body.classList.toggle("night", !!world.goal); nb.setAttribute("aria-pressed", !!world.goal); document.getElementById("nl").textContent = world.goal ? "Day" : "Night"; };
+
+/* ---------- loop ---------- */
+const clock = new THREE.Clock(), tmp = new THREE.Vector3(); let vo = -182;
+function frame() {
+  const dt = Math.min(clock.getDelta(), .1), t = clock.elapsedTime;
+  world.glow += (world.goal - world.glow) * Math.min(1, dt * 2); const g = world.glow;
+  scene.background.lerpColors(DAY.bg, NIGHT.bg, g); scene.fog.color.copy(scene.background);
+  seaMat.color.lerpColors(DAY.sea, NIGHT.sea, g);
+  hemi.intensity = DAY.hemi + (NIGHT.hemi - DAY.hemi) * g; sun.intensity = DAY.sun + (NIGHT.sun - DAY.sun) * g; moon.intensity = g * .9;
+  mat.win.emissiveIntensity = g * 2.2;
+
+  const p = seaGeo.attributes.position;
+  for (let i = 0; i < p.count; i++) { const x = seaBase[i * 3], z = seaBase[i * 3 + 2]; p.setY(i, Math.sin(x * .12 + t * .9) * .35 + Math.cos(z * .15 + t * .7) * .3); }
+  p.needsUpdate = true; seaGeo.computeVertexNormals();
+
+  ISLANDS.forEach(I => I.root.position.y = Math.sin(t * .6 + I.bob) * .15);
+  anim.forEach(f => f(t, dt));
+
+  if (flight.on) {
+    flight.t = Math.min(1, flight.t + dt / flight.dur); const e = ease(flight.t);
+    camera.position.lerpVectors(flight.p0, flight.p1, e); camera.position.y += Math.sin(Math.PI * e) * flight.lift;
+    controls.target.lerpVectors(flight.q0, flight.q1, e);
+    if (flight.t >= 1) flight.on = false;
+  }
+  controls.update();
+
+  // shift the picture so it centres in the free space between the left card and the panel
+  const leftW = 364, panelW = Math.min(560, innerWidth * .42);
+  const voGoal = document.body.classList.contains("open") ? (panelW - leftW) / 2 : -leftW / 2;
+  vo += (voGoal - vo) * Math.min(1, dt * 2.5);
+  camera.setViewOffset(innerWidth, innerHeight, vo, 0, innerWidth, innerHeight);
+
+  ray.setFromCamera(ptr, camera);
+  const hit = ray.intersectObjects(groups, true)[0];
+  const h = hit ? hit.object.userData.island ?? -1 : -1;
+  if (h !== hover) { hover = h; canvas.style.cursor = h >= 0 ? "pointer" : "grab"; }
+
+  const camDist = camera.position.distanceTo(controls.target);
+  const overview = camDist > 140 && active < 0 && activeD < 0;
+  ISLANDS.forEach((I, i) => {
+    tmp.set(I.pos[0], I.root.position.y + (I.district === "home" ? 9 : 8.4), I.pos[1]);
+    const near = camera.position.distanceTo(tmp);
+    tmp.project(camera);
+    I.label.style.transform = `translate(${(tmp.x * .5 + .5) * innerWidth}px,${(-tmp.y * .5 + .5) * innerHeight}px) translate(-50%,-100%)`;
+    I.label.classList.toggle("hot", i === hover || i === active);
+    const inDistrict = activeD >= 0 && DISTRICTS[activeD].id === I.district;
+    const show = tmp.z < 1 && (i === hover || i === active || (I.district === "home" && overview) || (activeD >= 0 && active < 0 ? inDistrict : (!overview && near < 110 && active < 0)));
+    I.label.classList.toggle("hidden", !show);
+  });
+  DISTRICTS.forEach(d => {
+    tmp.set(d.c[0], 12, d.c[1]).project(camera);
+    d.label.style.transform = `translate(${(tmp.x * .5 + .5) * innerWidth}px,${(-tmp.y * .5 + .5) * innerHeight}px) translate(-50%,-100%)`;
+    d.label.classList.toggle("hidden", !(tmp.z < 1 && active < 0 && activeD < 0));
+  });
+
+  renderer.render(scene, camera);
+  requestAnimationFrame(frame);
+}
+addEventListener("resize", () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+camera.position.set(10, 220, 40); controls.target.set(0, 0, 0);
+requestAnimationFrame(frame);
+function applyHash() {
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (!h) return;
+  if (h === "quick") { openQuick(); return; }
+  closeQuick();
+  const I = ISLANDS.find(x => x.id === h); if (I) { focus(I.idx); return; }
+  const k = DISTRICTS.findIndex(d => d.id === h); if (k >= 0) focusDistrict(k);
+}
+addEventListener("hashchange", applyHash);
+document.querySelectorAll("#quick .isl").forEach(el => el.addEventListener("click", e => { e.preventDefault(); history.replaceState(null, "", el.getAttribute("href")); applyHash(); }));
+setTimeout(() => {
+  document.getElementById("load").classList.add("done");
+  if (location.hash && location.hash !== "#quick") { camera.position.copy(HOME_CAM); applyHash(); }
+  else { flyTo(HOME_CAM, new THREE.Vector3(0, 0, 0), 3.4, 0); if (location.hash === "#quick") openQuick(); }
+}, 500);
+}
+</script>
+</body>
+</html>

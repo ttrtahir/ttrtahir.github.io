@@ -1,0 +1,6 @@
+portfolio-content-brief.md
+thesis_support_text.md
+**/portfolio-content-brief.md
+**/thesis_support_text.md
+.DS_Store
+__pycache__/

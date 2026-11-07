@@ -1,16 +1,30 @@
-## Hi there 👋
+# ttrtahir.github.io
 
-<!--
-**ttrtahir/ttrtahir** is a ✨ _special_ ✨ repository because its `README.md` (this file) appears on your GitHub profile.
+Portfolio of Yusuf Tahir Aydin: a low-poly archipelago built with three.js. It has a home island and three districts (Work, Study, Hobbies), and each island holds one piece of work.
 
-Here are some ideas to get you started:
+## Add an island
 
-- 🔭 I’m currently working on ...
-- 🌱 I’m currently learning ...
-- 👯 I’m looking to collaborate on ...
-- 🤔 I’m looking for help with ...
-- 💬 Ask me about ...
-- 📫 How to reach me: ...
-- 😄 Pronouns: ...
-- ⚡ Fun fact: ...
--->
+1. In `index.html`, find the `ISLANDS` list in the script and add a line, for example:
+   `{ id: "running", district: "hobbies", name: "Running", sub: "Half marathons", prop: "trees" },`
+2. Add the panel text as a template with the matching id, next to the others:
+   `<template id="c-running"> ... </template>`
+3. Done. The island gets placed, bridged, labelled and numbered automatically.
+
+`prop` decides what stands on the island. The options are house, bars, roads, office, factory, school, tensor, rocket, lighthouse, arcade, chess, music, radio, camera, offclock and trees. You can add new props to the `PROPS` object.
+
+## Add a district
+
+Add an entry to `DISTRICTS` with an id, a name, an angle in degrees and a distance from the centre, then give islands that district id.
+
+## Preview and deploy
+
+- Preview: run `python -m http.server` in this folder and open http://localhost:8000. Opening the file directly won't work, because ES modules need a server.
+- Deploy: push to `main` with GitHub Pages set to deploy from the `main` branch, root folder.
+- three.js 0.170 is included in `assets/js/`, so nothing loads from a CDN.
+
+## Links, quick view and CV
+
+- Every island and district has its own link, for example `ttrtahir.github.io/#comitatus`, `#police`, `#apg`, `#duyvis`, `#thesis`, `#offclock` or `#work`. Opening one flies straight there.
+- `ttrtahir.github.io/#quick` opens the one-page summary. Phones always get this version.
+- **CV:** put your CV at `assets/yusuf-aydin-cv.pdf`. A "Download CV" link appears in the quick view automatically once the file exists.
+- The share image for LinkedIn and WhatsApp is `assets/og.jpg`. LinkedIn caches previews, so use the LinkedIn Post Inspector to refresh it after deploying.
